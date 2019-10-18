@@ -17,13 +17,19 @@ public class Pawn extends AbstractFigure {
     }
 
     @Override
-    public void move(int position) {
-        this.setPosition(position);
+    public boolean move(int position) {
+        boolean isValid = isTurnValid(position);
+        if (isValid)
+            this.setPosition(position);
+        return isValid;
     }
 
     @Override
-    public boolean isTurnValid(String newPosition) {
-        return true;
+    public boolean isTurnValid(int newPosition) {
+        return rule() == newPosition;
+    }
 
+    private int rule() {
+        return this.getPosition() - 8;
     }
 }

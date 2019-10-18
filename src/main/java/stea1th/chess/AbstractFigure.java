@@ -22,7 +22,7 @@ public abstract class AbstractFigure {
 
     public abstract void register();
 
-    public abstract void move(int position);
+    public abstract boolean move(int position);
 
-    public abstract boolean isTurnValid(String newPosition);
+    public abstract boolean isTurnValid(int newPosition);
 }

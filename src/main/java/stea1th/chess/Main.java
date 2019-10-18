@@ -29,6 +29,5 @@ public class Main {
             figure.move(pos);
             figures.put(figure.getPosition(), figure);
         }
-
     }
 }
