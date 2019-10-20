@@ -1,10 +1,11 @@
-package stea1th.chess;
+package stea1th.chess.figures;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import stea1th.chess.rules.Rule;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +22,7 @@ public abstract class AbstractFigure implements Figure {
     private boolean white;
     private boolean alive;
     private int movesCount;
+    private Rule rule;
 
     AbstractFigure(String notation, String name, Integer position, boolean white) {
         this.notation = notation;

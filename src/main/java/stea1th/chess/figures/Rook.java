@@ -1,4 +1,4 @@
-package stea1th.chess;
+package stea1th.chess.figures;
 
 public class Rook extends AbstractFigure {
 

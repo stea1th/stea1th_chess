@@ -1,4 +1,4 @@
-package stea1th.chess;
+package stea1th.chess.figures;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,11 +30,12 @@ public class Pawn extends AbstractFigure {
 
     @Override
     public boolean isTurnValid(int newPosition) {
-        return rule() == newPosition;
+//        return rule() == newPosition;
+        return false;
     }
 
-    private int rule() {
-        return this.getPosition() - 8;
-    }
+//    private int rule() {
+//        return this.getPosition() - 8;
+//    }
 
 }

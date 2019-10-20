@@ -1,4 +1,4 @@
-package stea1th.chess;
+package stea1th.chess.helpers;
 
 import java.util.Arrays;
 import java.util.Scanner;

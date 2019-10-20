@@ -1,5 +1,7 @@
 package stea1th.chess;
 
+import stea1th.chess.figures.Figure;
+
 import java.util.Map;
 
 public class ChessBoard {

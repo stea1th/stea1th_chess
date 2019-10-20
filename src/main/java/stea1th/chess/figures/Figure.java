@@ -1,6 +1,8 @@
-package stea1th.chess;
+package stea1th.chess.figures;
 
 public interface Figure {
+
+    String getNotation();
 
     String getName();
 
