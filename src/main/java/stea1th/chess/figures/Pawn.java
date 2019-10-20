@@ -30,12 +30,6 @@ public class Pawn extends AbstractFigure {
 
     @Override
     public boolean isTurnValid(int newPosition) {
-//        return rule() == newPosition;
-        return false;
+        return rule.getAllPossibleMoves().get(String.valueOf(newPosition)) != null;
     }
-
-//    private int rule() {
-//        return this.getPosition() - 8;
-//    }
-
 }

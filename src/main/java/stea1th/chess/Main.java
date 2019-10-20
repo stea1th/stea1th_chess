@@ -5,10 +5,10 @@ import stea1th.chess.moves.MoveFactory;
 public class Main {
 
     public static void main(String[] args) {
-//        Game game = new Game();
-//        game.init();
-//        game.play();
+        Game game = new Game();
+        game.init();
+        game.play();
 //        ChessBoard.printNumbers();
-        MoveFactory.test();
+//        MoveFactory.test();
     }
 }

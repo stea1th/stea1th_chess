@@ -17,7 +17,7 @@ public class ChessBoard {
             for (int column = 1; column <= BOARD_SIZE; column++) {
                 int num = column + BOARD_SIZE * row;
                 Figure figure = figures.get(num);
-                String cell = figure != null ? " " + figure.getName() + " " : getEmptyCell(row, num);
+                String cell = figure != null ? " " + figure.getNotation() + " " : getEmptyCell(row, num);
                 System.out.print("|" + cell);
             }
             System.out.print("|");
