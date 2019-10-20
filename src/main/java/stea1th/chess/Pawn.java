@@ -7,12 +7,12 @@ import lombok.Data;
 @AllArgsConstructor
 public class Pawn extends AbstractFigure {
 
-    public Pawn(String name, Integer position, boolean white, boolean alive) {
-        super(name, position, white, alive);
+    public Pawn(String notation, String name, Integer position, boolean white) {
+        super(notation, name, position, white);
     }
 
     public Pawn(Integer position, boolean white) {
-        this("P", position, white, true);
+        this("p","Pawn", position, white);
     }
 
     @Override
@@ -36,4 +36,5 @@ public class Pawn extends AbstractFigure {
     private int rule() {
         return this.getPosition() - 8;
     }
+
 }
