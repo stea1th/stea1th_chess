@@ -1,22 +1,10 @@
 package stea1th.chess.moves;
 
-import org.reflections.Reflections;
-
-import java.util.Set;
+import stea1th.chess.enums.Direction;
 
 public class MoveFactory {
 
-    private MoveFactory() {}
-
-    static {
-        Reflections reflections = new Reflections(Move.class);
-        Set<Class<? extends Move>> subTypes = reflections.getSubTypesOf(Move.class);
-        subTypes.forEach(i-> System.out.println(i.getSimpleName()));
+    public static int getAdjoiningPosition(int position, Direction direction) {
+        return position + direction.value;
     }
-
-    public static void test() {
-
-    }
-
-
 }

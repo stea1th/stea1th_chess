@@ -14,22 +14,4 @@ public class Pawn extends AbstractFigure {
     public Pawn(Integer position, boolean white) {
         this("p","Pawn", position, white);
     }
-
-    @Override
-    public void register() {
-
-    }
-
-    @Override
-    public boolean move(int position) {
-        boolean isValid = isTurnValid(position);
-        if (isValid)
-            this.setPosition(position);
-        return isValid;
-    }
-
-    @Override
-    public boolean isTurnValid(int newPosition) {
-        return rule.getAllPossibleMoves().get(String.valueOf(newPosition)) != null;
-    }
 }

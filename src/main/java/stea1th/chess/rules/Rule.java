@@ -4,5 +4,5 @@ import java.util.Map;
 
 public interface Rule {
 
-    Map<String, Integer> getAllPossibleMoves();
+    Map<String, Integer> getAllPossibleMoves(int position);
 }

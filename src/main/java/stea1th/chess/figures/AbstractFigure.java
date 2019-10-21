@@ -32,16 +32,25 @@ public abstract class AbstractFigure implements Figure {
         this.white = white;
         this.alive = true;
         this.movesCount = 0;
-        this.rule = loadRule();
+
     }
 
     private final static Map<String, String> REGISTERED_FIGURES = new HashMap<>();
 
-    public abstract void register();
+    public void register() {
+        this.rule = loadRule();
+    }
 
-    public abstract boolean move(int position);
+    public boolean move(int position){
+        boolean isValid = isTurnValid(position);
+        if (isValid)
+            this.setPosition(position);
+        return isValid;
+    }
 
-    public abstract boolean isTurnValid(int newPosition);
+    public boolean isTurnValid(int newPosition) {
+        return rule.getAllPossibleMoves(this.getPosition()).get(String.valueOf(newPosition)) != null;
+    }
 
     private Rule loadRule() {
         return RuleFactory.createRule(this);

@@ -11,4 +11,6 @@ public interface Figure {
     void setPosition(Integer position);
 
     boolean move(int newPosition);
+
+    void register();
 }

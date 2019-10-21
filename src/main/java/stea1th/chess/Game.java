@@ -19,6 +19,9 @@ public class Game {
         Figure pawn = new Pawn(53, true);
         Figure pawn2 = new Pawn(54, true);
         Figure pawn3 = new Pawn(55, true);
+        pawn.register();
+        pawn2.register();
+        pawn3.register();
         figuresInGame.put(pawn.getPosition(), pawn);
         figuresInGame.put(pawn2.getPosition(), pawn2);
         figuresInGame.put(pawn3.getPosition(), pawn3);
@@ -27,15 +30,19 @@ public class Game {
     public void play() {
         while (true) {
             ChessBoard.printBoard(figuresInGame);
-            Integer[] positions = parsePositions(readFromConsole());
-            Integer fromPosition = positions[0];
-            Figure figure = figuresInGame.get(fromPosition);
-            if(figure != null){
-                figuresInGame.remove(fromPosition);
-                figure.move(positions[1]);
-                figuresInGame.put(figure.getPosition(), figure);
-            }
+            moveFigure(parsePositions(readFromConsole()));
         }
     }
 
+    public boolean moveFigure(Integer[] positions) {
+        Integer fromPosition = positions[0];
+        Figure figure = figuresInGame.get(fromPosition);
+        if(figure != null){
+            figuresInGame.remove(fromPosition);
+            figure.move(positions[1]);
+            figuresInGame.put(figure.getPosition(), figure);
+            return true;
+        }
+        return false;
+    }
 }
