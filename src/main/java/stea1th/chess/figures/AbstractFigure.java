@@ -23,7 +23,7 @@ public abstract class AbstractFigure implements Figure {
     private boolean white;
     private boolean alive;
     private int movesCount;
-    Rule rule;
+    private Rule rule;
 
     AbstractFigure(String notation, String name, Integer position, boolean white) {
         this.notation = notation;
@@ -48,7 +48,7 @@ public abstract class AbstractFigure implements Figure {
         return isValid;
     }
 
-    public boolean isTurnValid(int newPosition) {
+    private boolean isTurnValid(int newPosition) {
         return rule.getAllPossibleMoves(this.getPosition()).get(String.valueOf(newPosition)) != null;
     }
 

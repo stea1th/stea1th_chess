@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.Getter;
 import stea1th.chess.enums.Direction;
 import stea1th.chess.figures.Figure;
-import stea1th.chess.moves.MoveFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +49,7 @@ public abstract class AbstractRule implements Rule {
             allPossibleMoves.put("" + position, position);
     }
 
-    public static boolean isInBorders(Integer position) {
+    private static boolean isInBorders(Integer position) {
         return position != null && position > MIN.value && position < MAX.value;
     }
 
@@ -61,7 +60,7 @@ public abstract class AbstractRule implements Rule {
     void oneCellTurn(Integer position) {
         clear();
         getDirections().forEach(i -> {
-            addToPossibleMoves(MoveFactory.getAdjoiningPosition(position, i));
+            addToPossibleMoves(getAdjoiningPosition(position, i));
         });
     }
 
@@ -70,10 +69,15 @@ public abstract class AbstractRule implements Rule {
         getDirections().forEach(i -> {
             Integer tempPosition = position;
             while (isInBorders(tempPosition)) {
-                tempPosition = MoveFactory.getAdjoiningPosition(tempPosition, i);
+                tempPosition = getAdjoiningPosition(tempPosition, i);
                 addToPossibleMoves(tempPosition);
             }
         });
+    }
+
+    private static Integer getAdjoiningPosition(int position, Direction direction) {
+        int result = position + direction.value;
+        return isInBorders(result)? result : null;
     }
 
 
