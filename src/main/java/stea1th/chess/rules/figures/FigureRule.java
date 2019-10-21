@@ -6,9 +6,9 @@ import java.util.Map;
 
 public interface FigureRule {
 
-    Map<String, Integer> getAllPossibleMoves(int position);
+    Map<String, Integer> getAllPossibleMoves(Piece piece);
 
     void setFiguresInGame(Map<Integer, Piece> figuresInGame);
 
-    void setPiece(Piece piece);
+    void setMainPiece(Piece mainPiece);
 }

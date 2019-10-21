@@ -49,7 +49,7 @@ public abstract class AbstractPiece implements Piece {
     }
 
     private boolean isTurnValid(int newPosition) {
-        return figureRule.getAllPossibleMoves(this.getPosition()).get(String.valueOf(newPosition)) != null;
+        return figureRule.getAllPossibleMoves(this).get(String.valueOf(newPosition)) != null;
     }
 
     private FigureRule loadRule() {

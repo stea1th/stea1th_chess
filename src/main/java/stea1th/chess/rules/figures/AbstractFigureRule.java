@@ -5,7 +5,6 @@ import stea1th.chess.pieces.Piece;
 import stea1th.chess.rules.enums.Direction;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,11 +14,10 @@ import static stea1th.chess.rules.enums.Direction.MIN;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-//@NoArgsConstructor
 public abstract class AbstractFigureRule implements FigureRule {
 
     @Setter
-    private Piece piece;
+    private Piece mainPiece;
 
     private final static Map<String, String> REGISTERED_RULES = new HashMap<>();
 
@@ -27,14 +25,13 @@ public abstract class AbstractFigureRule implements FigureRule {
     private final Map<String, Integer> allPossibleMoves = new HashMap<>();
 
     @Getter
-//    @Setter
     private final Set<Direction> directions;
 
     @Setter
     private Map<Integer, Piece> figuresInGame = new HashMap<>();
 
-    public Map<String, Integer> getAllPossibleMoves(int position) {
-        allPossibleMoves(position);
+    public Map<String, Integer> getAllPossibleMoves(Piece piece) {
+        allPossibleMoves(piece);
         return allPossibleMoves;
     }
 
@@ -50,11 +47,15 @@ public abstract class AbstractFigureRule implements FigureRule {
         return (T) Class.forName(clazzName != null ? clazzName : REGISTERED_RULES.get(" ")).newInstance();
     }
 
-    public abstract void allPossibleMoves(int position);
+    public abstract void allPossibleMoves(Piece piece);
 
     private void addToPossibleMoves(Integer position) {
         if (position != null)
             allPossibleMoves.put("" + position, position);
+    }
+
+    void addToDirections(Direction dir) {
+        directions.add(dir);
     }
 
     private static boolean isInBorders(Integer position) {
@@ -66,7 +67,7 @@ public abstract class AbstractFigureRule implements FigureRule {
     }
 
     private boolean isSameColor(Integer position) {
-        return figuresInGame.get(position).isWhite() == piece.isWhite();
+        return figuresInGame.get(position).isWhite() == mainPiece.isWhite();
     }
 
     private void clear() {

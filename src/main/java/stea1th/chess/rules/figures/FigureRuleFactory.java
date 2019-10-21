@@ -26,7 +26,7 @@ public class FigureRuleFactory {
     public static FigureRule createRule(Piece piece) {
         try {
             FigureRule rule = AbstractFigureRule.newInstance(piece);
-            rule.setPiece(piece);
+            rule.setMainPiece(piece);
             return rule;
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();

@@ -18,7 +18,7 @@ public class Game {
     public void init() {
         Piece pawn = new Pawn(53, true);
         Piece pawn2 = new Pawn(54, true);
-        Piece pawn3 = new Pawn(55, true);
+        Piece pawn3 = new Pawn(14, false);
         Piece bishop = new Bishop(59, true);
         pawn.register();
         pawn2.register();

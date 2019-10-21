@@ -1,6 +1,7 @@
 package stea1th.chess.rules.figures;
 
 import lombok.ToString;
+import stea1th.chess.pieces.Piece;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -20,8 +21,8 @@ public class BishopFigureRule extends AbstractFigureRule {
     }
 
     @Override
-    public void allPossibleMoves(int position) {
-        allCellsTurn(position);
+    public void allPossibleMoves(Piece piece) {
+        allCellsTurn(piece.getPosition());
     }
 
 }

@@ -1,9 +1,9 @@
 package stea1th.chess.rules.figures;
 
 import lombok.ToString;
+import stea1th.chess.pieces.Piece;
+import stea1th.chess.rules.enums.Direction;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 
 import static stea1th.chess.rules.enums.Direction.NORD;
@@ -13,7 +13,7 @@ import static stea1th.chess.rules.enums.Direction.SOUTH;
 public class PawnFigureRule extends AbstractFigureRule {
 
     public PawnFigureRule() {
-        super(new HashSet<>(Collections.singletonList(NORD)));
+        super(new HashSet<>());
     }
 
     @Override
@@ -22,7 +22,9 @@ public class PawnFigureRule extends AbstractFigureRule {
     }
 
     @Override
-    public void allPossibleMoves(int position) {
-        oneCellTurn(position);
+    public void allPossibleMoves(Piece piece) {
+        Direction dir = piece.isWhite()? NORD : SOUTH;
+        addToDirections(dir);
+        oneCellTurn(piece.getPosition());
     }
 }
