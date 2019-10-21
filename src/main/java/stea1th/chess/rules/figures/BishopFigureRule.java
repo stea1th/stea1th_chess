@@ -1,13 +1,16 @@
-package stea1th.chess.rules;
+package stea1th.chess.rules.figures;
+
+import lombok.ToString;
 
 import java.util.Arrays;
 import java.util.HashSet;
 
-import static stea1th.chess.enums.Direction.*;
+import static stea1th.chess.rules.enums.Direction.*;
 
-public class BishopRule extends AbstractRule {
+@ToString
+public class BishopFigureRule extends AbstractFigureRule {
 
-    public BishopRule() {
+    public BishopFigureRule() {
         super(new HashSet<>(Arrays.asList(NORDEAST, NORDWEST, SOUTHEAST, SOUTHWEST)));
     }
 
@@ -20,4 +23,5 @@ public class BishopRule extends AbstractRule {
     public void allPossibleMoves(int position) {
         allCellsTurn(position);
     }
+
 }

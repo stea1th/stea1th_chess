@@ -1,6 +1,8 @@
-package stea1th.chess.figures;
+package stea1th.chess.pieces;
 
-public interface Figure {
+import java.util.Map;
+
+public interface Piece {
 
     String getNotation();
 
@@ -13,4 +15,10 @@ public interface Figure {
     boolean move(int newPosition);
 
     void register();
+
+    void setFiguresInGame(Map<Integer, Piece> figuresInGame);
+
+    boolean isWhite();
+
+
 }

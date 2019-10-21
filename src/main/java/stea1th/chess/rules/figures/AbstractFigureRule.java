@@ -1,21 +1,25 @@
-package stea1th.chess.rules;
+package stea1th.chess.rules.figures;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import stea1th.chess.enums.Direction;
-import stea1th.chess.figures.Figure;
+import lombok.*;
+import stea1th.chess.pieces.Piece;
+import stea1th.chess.rules.enums.Direction;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static stea1th.chess.enums.Direction.MAX;
-import static stea1th.chess.enums.Direction.MIN;
+import static stea1th.chess.rules.enums.Direction.MAX;
+import static stea1th.chess.rules.enums.Direction.MIN;
 
 @Data
 @AllArgsConstructor
-public abstract class AbstractRule implements Rule {
+@RequiredArgsConstructor
+//@NoArgsConstructor
+public abstract class AbstractFigureRule implements FigureRule {
+
+    @Setter
+    private Piece piece;
 
     private final static Map<String, String> REGISTERED_RULES = new HashMap<>();
 
@@ -23,7 +27,11 @@ public abstract class AbstractRule implements Rule {
     private final Map<String, Integer> allPossibleMoves = new HashMap<>();
 
     @Getter
+//    @Setter
     private final Set<Direction> directions;
+
+    @Setter
+    private Map<Integer, Piece> figuresInGame = new HashMap<>();
 
     public Map<String, Integer> getAllPossibleMoves(int position) {
         allPossibleMoves(position);
@@ -37,8 +45,8 @@ public abstract class AbstractRule implements Rule {
     }
 
     @SuppressWarnings(value = "unchecked")
-    static <T extends AbstractRule> T newInstance(Figure figure) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-        String clazzName = REGISTERED_RULES.get(figure.getNotation());
+    static <T extends AbstractFigureRule> T newInstance(Piece piece) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        String clazzName = REGISTERED_RULES.get(piece.getNotation());
         return (T) Class.forName(clazzName != null ? clazzName : REGISTERED_RULES.get(" ")).newInstance();
     }
 
@@ -53,6 +61,14 @@ public abstract class AbstractRule implements Rule {
         return position != null && position > MIN.value && position < MAX.value;
     }
 
+    private boolean isPieceOnTheWay(Integer position) {
+        return figuresInGame.get(position) != null;
+    }
+
+    private boolean isSameColor(Integer position) {
+        return figuresInGame.get(position).isWhite() == piece.isWhite();
+    }
+
     private void clear() {
         allPossibleMoves.clear();
     }
@@ -60,7 +76,8 @@ public abstract class AbstractRule implements Rule {
     void oneCellTurn(Integer position) {
         clear();
         getDirections().forEach(i -> {
-            addToPossibleMoves(getAdjoiningPosition(position, i));
+            Integer tempPosition = getAdjoiningPosition(position, i);
+            addToPossibleMoves(isPieceOnTheWay(tempPosition) && isSameColor(tempPosition) ? null : tempPosition);
         });
     }
 
@@ -70,6 +87,10 @@ public abstract class AbstractRule implements Rule {
             Integer tempPosition = position;
             while (isInBorders(tempPosition)) {
                 tempPosition = getAdjoiningPosition(tempPosition, i);
+                if (isPieceOnTheWay(tempPosition)) {
+                    addToPossibleMoves(isSameColor(tempPosition) ? null : tempPosition);
+                    break;
+                }
                 addToPossibleMoves(tempPosition);
             }
         });
@@ -77,7 +98,7 @@ public abstract class AbstractRule implements Rule {
 
     private static Integer getAdjoiningPosition(int position, Direction direction) {
         int result = position + direction.value;
-        return isInBorders(result)? result : null;
+        return isInBorders(result) ? result : null;
     }
 
 

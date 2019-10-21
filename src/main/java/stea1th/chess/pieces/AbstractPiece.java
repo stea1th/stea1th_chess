@@ -1,12 +1,12 @@
-package stea1th.chess.figures;
+package stea1th.chess.pieces;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import stea1th.chess.rules.Rule;
-import stea1th.chess.rules.RuleFactory;
+import stea1th.chess.rules.figures.FigureRule;
+import stea1th.chess.rules.figures.FigureRuleFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +14,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class AbstractFigure implements Figure {
+public abstract class AbstractPiece implements Piece {
 
     @Getter
     private String notation;
@@ -23,9 +23,9 @@ public abstract class AbstractFigure implements Figure {
     private boolean white;
     private boolean alive;
     private int movesCount;
-    private Rule rule;
+    private FigureRule figureRule;
 
-    AbstractFigure(String notation, String name, Integer position, boolean white) {
+    AbstractPiece(String notation, String name, Integer position, boolean white) {
         this.notation = notation;
         this.name = name;
         this.position = position;
@@ -38,7 +38,7 @@ public abstract class AbstractFigure implements Figure {
     private final static Map<String, String> REGISTERED_FIGURES = new HashMap<>();
 
     public void register() {
-        this.rule = loadRule();
+        this.figureRule = loadRule();
     }
 
     public boolean move(int position){
@@ -49,10 +49,14 @@ public abstract class AbstractFigure implements Figure {
     }
 
     private boolean isTurnValid(int newPosition) {
-        return rule.getAllPossibleMoves(this.getPosition()).get(String.valueOf(newPosition)) != null;
+        return figureRule.getAllPossibleMoves(this.getPosition()).get(String.valueOf(newPosition)) != null;
     }
 
-    private Rule loadRule() {
-        return RuleFactory.createRule(this);
+    private FigureRule loadRule() {
+        return FigureRuleFactory.createRule(this);
+    }
+
+    public void setFiguresInGame(Map<Integer, Piece> figuresInGame) {
+        figureRule.setFiguresInGame(figuresInGame);
     }
 }

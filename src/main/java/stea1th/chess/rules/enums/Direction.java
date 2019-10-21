@@ -1,4 +1,4 @@
-package stea1th.chess.enums;
+package stea1th.chess.rules.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

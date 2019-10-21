@@ -1,19 +1,19 @@
-package stea1th.chess.rules;
+package stea1th.chess.rules.figures;
 
 import org.reflections.Reflections;
-import stea1th.chess.figures.Figure;
+import stea1th.chess.pieces.Piece;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 
-public class RuleFactory {
+public class FigureRuleFactory {
 
-    private RuleFactory() {
+    private FigureRuleFactory() {
     }
 
     static {
-        Reflections reflections = new Reflections(AbstractRule.class);
-        Set<Class<? extends AbstractRule>> subTypes = reflections.getSubTypesOf(AbstractRule.class);
+        Reflections reflections = new Reflections(AbstractFigureRule.class);
+        Set<Class<? extends AbstractFigureRule>> subTypes = reflections.getSubTypesOf(AbstractFigureRule.class);
         subTypes.forEach(i -> {
             try {
                 i.getMethod("register").invoke(i.newInstance());
@@ -23,9 +23,11 @@ public class RuleFactory {
         });
     }
 
-    public static Rule createRule(Figure figure) {
+    public static FigureRule createRule(Piece piece) {
         try {
-            return AbstractRule.newInstance(figure);
+            FigureRule rule = AbstractFigureRule.newInstance(piece);
+            rule.setPiece(piece);
+            return rule;
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         }

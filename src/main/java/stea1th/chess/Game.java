@@ -1,26 +1,25 @@
 package stea1th.chess;
 
 import lombok.Getter;
-import stea1th.chess.figures.Bishop;
-import stea1th.chess.figures.Figure;
-import stea1th.chess.figures.Pawn;
+import stea1th.chess.pieces.Bishop;
+import stea1th.chess.pieces.Piece;
+import stea1th.chess.pieces.Pawn;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static stea1th.chess.helpers.ConsoleHelper.parsePositions;
-import static stea1th.chess.helpers.ConsoleHelper.readFromConsole;
+import static stea1th.chess.helpers.ConsoleHelper.*;
 
 public class Game {
 
     @Getter
-    private Map<Integer, Figure> figuresInGame = new HashMap<>();
+    private Map<Integer, Piece> figuresInGame = new HashMap<>();
 
     public void init() {
-        Figure pawn = new Pawn(53, true);
-        Figure pawn2 = new Pawn(54, true);
-        Figure pawn3 = new Pawn(55, true);
-        Figure bishop = new Bishop(59, true);
+        Piece pawn = new Pawn(53, true);
+        Piece pawn2 = new Pawn(54, true);
+        Piece pawn3 = new Pawn(55, true);
+        Piece bishop = new Bishop(59, true);
         pawn.register();
         pawn2.register();
         pawn3.register();
@@ -33,18 +32,19 @@ public class Game {
 
     public void play() {
         while (true) {
-            ChessBoard.printBoard(figuresInGame);
+            printBoard(figuresInGame);
             moveFigure(parsePositions(readFromConsole()));
         }
     }
 
     public boolean moveFigure(Integer[] positions) {
         Integer fromPosition = positions[0];
-        Figure figure = figuresInGame.get(fromPosition);
-        if(figure != null){
+        Piece piece = figuresInGame.get(fromPosition);
+        if(piece != null){
+            piece.setFiguresInGame(figuresInGame);
             figuresInGame.remove(fromPosition);
-            figure.move(positions[1]);
-            figuresInGame.put(figure.getPosition(), figure);
+            piece.move(positions[1]);
+            figuresInGame.put(piece.getPosition(), piece);
             return true;
         }
         return false;
