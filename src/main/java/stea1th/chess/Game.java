@@ -1,6 +1,7 @@
 package stea1th.chess;
 
 import lombok.Getter;
+import stea1th.chess.figures.Bishop;
 import stea1th.chess.figures.Figure;
 import stea1th.chess.figures.Pawn;
 
@@ -19,12 +20,15 @@ public class Game {
         Figure pawn = new Pawn(53, true);
         Figure pawn2 = new Pawn(54, true);
         Figure pawn3 = new Pawn(55, true);
+        Figure bishop = new Bishop(59, true);
         pawn.register();
         pawn2.register();
         pawn3.register();
+        bishop.register();
         figuresInGame.put(pawn.getPosition(), pawn);
         figuresInGame.put(pawn2.getPosition(), pawn2);
         figuresInGame.put(pawn3.getPosition(), pawn3);
+        figuresInGame.put(bishop.getPosition(), bishop);
     }
 
     public void play() {

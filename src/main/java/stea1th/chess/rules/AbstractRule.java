@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import static stea1th.chess.enums.Direction.MAX;
+import static stea1th.chess.enums.Direction.MIN;
+
 @Data
 @AllArgsConstructor
 public abstract class AbstractRule implements Rule {
@@ -20,6 +23,7 @@ public abstract class AbstractRule implements Rule {
     @Getter
     private final Map<String, Integer> allPossibleMoves = new HashMap<>();
 
+    @Getter
     private final Set<Direction> directions;
 
     public Map<String, Integer> getAllPossibleMoves(int position) {
@@ -29,24 +33,48 @@ public abstract class AbstractRule implements Rule {
 
     public abstract void register();
 
-    public void addToRegisteredRules(String key, String value) {
+    void addToRegisteredRules(String key, String value) {
         REGISTERED_RULES.put(key, value);
     }
 
     @SuppressWarnings(value = "unchecked")
-    public static <T extends AbstractRule> T newInstance(Figure figure) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    static <T extends AbstractRule> T newInstance(Figure figure) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         String clazzName = REGISTERED_RULES.get(figure.getNotation());
         return (T) Class.forName(clazzName != null ? clazzName : REGISTERED_RULES.get(" ")).newInstance();
     }
 
-    public void allPossibleMoves(int position) {
-        directions.forEach(i-> addToPossibleMoves(MoveFactory.getAdjoiningPosition(position, i)));
+    public abstract void allPossibleMoves(int position);
+
+    private void addToPossibleMoves(Integer position) {
+        if (position != null)
+            allPossibleMoves.put("" + position, position);
     }
 
-    void addToPossibleMoves(int position) {
-        allPossibleMoves.put("" + position, position);
+    public static boolean isInBorders(Integer position) {
+        return position != null && position > MIN.value && position < MAX.value;
     }
 
+    private void clear() {
+        allPossibleMoves.clear();
+    }
+
+    void oneCellTurn(Integer position) {
+        clear();
+        getDirections().forEach(i -> {
+            addToPossibleMoves(MoveFactory.getAdjoiningPosition(position, i));
+        });
+    }
+
+    void allCellsTurn(Integer position) {
+        clear();
+        getDirections().forEach(i -> {
+            Integer tempPosition = position;
+            while (isInBorders(tempPosition)) {
+                tempPosition = MoveFactory.getAdjoiningPosition(tempPosition, i);
+                addToPossibleMoves(tempPosition);
+            }
+        });
+    }
 
 
 }

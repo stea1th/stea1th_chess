@@ -16,4 +16,9 @@ public class PawnRule extends AbstractRule {
     public void register() {
         addToRegisteredRules("p", this.getClass().getName());
     }
+
+    @Override
+    public void allPossibleMoves(int position) {
+        oneCellTurn(position);
+    }
 }
