@@ -27,6 +27,12 @@ public class ConsoleHelper {
     public static void printBoard(Map<Integer, Piece> figures) {
         String[] deadPieces = getAllDeadPieces(figures);
         System.out.println("Killed white: " + deadPieces[0]);
+        printForBlack(figures);
+
+        System.out.println("Killed black: " + deadPieces[1]);
+    }
+
+    public static void printForWhite(Map<Integer, Piece> figures) {
         for (int row = 0; row < BOARD_SIZE; row++) {
             System.out.println();
             System.out.println("---------------------------------");
@@ -40,8 +46,22 @@ public class ConsoleHelper {
         }
         System.out.println();
         System.out.println("---------------------------------");
+    }
 
-        System.out.println("Killed black: " + deadPieces[1]);
+    public static void printForBlack(Map<Integer, Piece> figures) {
+        for (int row = BOARD_SIZE; row > 0; row--) {
+            System.out.println();
+            System.out.println("---------------------------------");
+            for (int column = 0; column < BOARD_SIZE; column++) {
+                int num = BOARD_SIZE * row -column;
+                Piece piece = figures.get(num);
+                String cell = piece != null && piece.isAlive() ? " " + piece.getName() : getEmptyCell(row, num);
+                System.out.print("|" + cell);
+            }
+            System.out.print("|");
+        }
+        System.out.println();
+        System.out.println("---------------------------------");
     }
 
     private static String[] getAllDeadPieces(Map<Integer, Piece> figures) {
@@ -51,9 +71,9 @@ public class ConsoleHelper {
         for (Piece piece : figures.values()) {
             if (!piece.isAlive()) {
                 if (piece.isWhite())
-                    wDead.append(piece.getName()).append(", ");
+                    wDead.append(wDead.length() == 0? piece.getName() : ", " + piece.getName());
                 else
-                    bDead.append(piece.getName()).append(", ");
+                    bDead.append(bDead.length() == 0? piece.getName() : ", " + piece.getName());
             }
         }
         return new String[]{wDead.toString(), bDead.toString()};
@@ -69,12 +89,26 @@ public class ConsoleHelper {
         }
     }
 
-    public static void printNumbers() {
+    public static void printForWhiteNumbers() {
         for (int row = 0; row < BOARD_SIZE; row++) {
             System.out.println();
             System.out.println("---------------------------------");
             for (int column = 1; column <= BOARD_SIZE; column++) {
                 String num = "" + (column + BOARD_SIZE * row);
+                System.out.print("| " + (num.length() == 1 ? num + " " : num));
+            }
+            System.out.print("|");
+        }
+        System.out.println();
+        System.out.println("---------------------------------");
+    }
+
+    public static void printForBlackNumbers() {
+        for (int row =  BOARD_SIZE; row > 0; row--) {
+            System.out.println();
+            System.out.println("---------------------------------");
+            for (int column = 0; column < BOARD_SIZE; column++) {
+                String num = "" + (BOARD_SIZE * row - column);
                 System.out.print("| " + (num.length() == 1 ? num + " " : num));
             }
             System.out.print("|");

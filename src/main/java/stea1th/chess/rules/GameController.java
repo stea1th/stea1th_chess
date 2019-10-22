@@ -52,7 +52,7 @@ public class GameController {
         if(anotherPiece != null && anotherPiece.isWhite() != piece.isWhite()) {
             figuresInGame.remove(newPosition);
             anotherPiece.setAlive(false);
-            figuresInGame.put(count.addAndGet(anotherPiece.getPosition()), anotherPiece);
+            figuresInGame.put(count.get(), anotherPiece);
         }
     }
 }
