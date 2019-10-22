@@ -53,8 +53,10 @@ public class ConsoleHelper {
         System.out.println();
         System.out.println(emptyString + "---------------------------------");
 
-        emptyString += IntStream.rangeClosed(65, 72).mapToObj(i-> (char) i).map(i-> Character.toString(i)).collect(Collectors.joining("   ", "  ", "  "));
-        System.out.println(emptyString);
+        System.out.println(emptyString + IntStream.rangeClosed(65, 72)
+                .mapToObj(i -> (char) i)
+                .map(i -> Character.toString(i))
+                .collect(Collectors.joining(emptyString, "  ", "  ")));
 
     }
 
