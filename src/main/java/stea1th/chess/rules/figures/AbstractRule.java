@@ -4,7 +4,10 @@ import lombok.*;
 import stea1th.chess.figures.Figure;
 import stea1th.chess.rules.enums.Direction;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import static stea1th.chess.rules.enums.Direction.MAX;
 import static stea1th.chess.rules.enums.Direction.MIN;

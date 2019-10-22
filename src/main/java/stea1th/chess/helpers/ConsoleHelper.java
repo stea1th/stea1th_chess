@@ -60,6 +60,7 @@ public class ConsoleHelper {
                 .mapToObj(i -> (char) i)
                 .map(i -> Character.toString(i))
                 .collect(Collectors.joining(emptyString, "  ", "  ")));
+        System.out.println();
     }
 
     public static void printForBlack(Map<Integer, Figure> figures) {

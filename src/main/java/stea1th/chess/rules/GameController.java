@@ -3,7 +3,8 @@ package stea1th.chess.rules;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import lombok.Getter;
-import stea1th.chess.figures.*;
+import stea1th.chess.figures.Figure;
+import stea1th.chess.figures.FigureFactory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,30 +23,20 @@ public class GameController {
     }
 
     public void init() {
-//        Figure pawn = new Pawn(53, true);
-//        Figure pawn2 = new Pawn(54, true);
-//        Figure pawn3 = new Pawn(45, false);
-//        Figure bishop = new Bishop(59, true);
-//        Figure knight = new Knight(58, true);
-//        figuresInGame.put(pawn.getPosition(), pawn);
-//        figuresInGame.put(pawn2.getPosition(), pawn2);
-//        figuresInGame.put(pawn3.getPosition(), pawn3);
-//        figuresInGame.put(bishop.getPosition(), bishop);
-//        figuresInGame.put(knight.getPosition(), knight);
-//        Figure pa = new Pawn();
         Config config = ConfigFactory.parseResources("default.conf");
-        FigureFactory.getFigureNames().forEach(i-> {
-            List<String> list = config.getStringList(i + ".white.positions");
-            if(!list.isEmpty()){
-                list.forEach(s-> {
-                    Figure figure = FigureFactory.createFigure(i, Integer.valueOf(s), true);
-                    assert figure != null;
-                    figuresInGame.put(figure.getPosition(), figure);
-                });
-            }
-
-        });
-
+        String[] configParams = new String[]{".white.positions", ".black.positions"};
+        for (String param : configParams) {
+            FigureFactory.getFigureNames().forEach(i -> {
+                List<String> list = config.getStringList(i + param);
+                if (!list.isEmpty()) {
+                    list.forEach(s -> {
+                        Figure figure = FigureFactory.createFigure(i, Integer.valueOf(s), param.contains("white"));
+                        assert figure != null;
+                        figuresInGame.put(figure.getPosition(), figure);
+                    });
+                }
+            });
+        }
     }
 
     public boolean moveFigure(Integer[] positions) {
@@ -58,9 +49,8 @@ public class GameController {
                 killEnemy(figure);
             }
             figuresInGame.put(figure.getPosition(), figure);
-            return true;
         }
-        return false;
+        return figure != null;
     }
 
     private void killEnemy(Figure figure) {

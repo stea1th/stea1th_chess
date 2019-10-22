@@ -47,10 +47,6 @@ public abstract class AbstractFigure implements Figure {
 
     private final static Map<String, String> REGISTERED_FIGURES = new HashMap<>();
 
-//    public static void test() {
-//        REGISTERED_FIGURES.forEach((k, v) -> System.out.println(k + " " + v));
-//    }
-
     public void register() {
         addToRegisteredFigures(this.getName(), this.getClass().getName());
     }
@@ -58,7 +54,6 @@ public abstract class AbstractFigure implements Figure {
     @SuppressWarnings(value = "unchecked")
     static <T extends AbstractFigure> T newInstance(String key, Integer position, boolean white) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         String clazzName = REGISTERED_FIGURES.get(key);
-        System.out.println(clazzName);
         return (T) Class.forName(clazzName).getConstructor(Integer.class, boolean.class).newInstance(position, white);
     }
 

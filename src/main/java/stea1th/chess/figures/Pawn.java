@@ -14,6 +14,6 @@ public class Pawn extends AbstractFigure {
     }
 
     public Pawn(Integer position, boolean white) {
-        this("p","pawn", position, white);
+        this("p", "pawn", position, white);
     }
 }

@@ -30,9 +30,9 @@ public class PawnRule extends AbstractRule {
 
     private void pawnMovesIfEnemyNearby(Figure figure) {
         Direction[] dirs = figure.isWhite() ? new Direction[]{NORTH_EAST, NORTH_WEST} : new Direction[]{SOUTH_EAST, SOUTH_WEST};
-        for (Direction dir: dirs) {
+        for (Direction dir : dirs) {
             Integer position = getAdjoiningPosition(figure.getPosition(), dir);
-            if(isEnemyNearby(position))
+            if (isEnemyNearby(position))
                 addToPossibleMoves(position);
         }
     }
