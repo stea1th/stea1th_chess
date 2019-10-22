@@ -5,11 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import stea1th.chess.rules.figures.Rule;
 import stea1th.chess.rules.figures.FigureRuleFactory;
+import stea1th.chess.rules.figures.Rule;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -40,20 +42,28 @@ public abstract class AbstractFigure implements Figure {
         this.white = white;
         this.alive = true;
         this.movesCount = 0;
-//        register();
         this.rule = loadRule();
     }
 
     private final static Map<String, String> REGISTERED_FIGURES = new HashMap<>();
 
-    public static void test() {
-        REGISTERED_FIGURES.forEach((k, v) -> System.out.println(k + " " + v));
-    }
-
-//    public abstract void register();
+//    public static void test() {
+//        REGISTERED_FIGURES.forEach((k, v) -> System.out.println(k + " " + v));
+//    }
 
     public void register() {
         addToRegisteredFigures(this.getName(), this.getClass().getName());
+    }
+
+    @SuppressWarnings(value = "unchecked")
+    static <T extends AbstractFigure> T newInstance(String key, Integer position, boolean white) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+        String clazzName = REGISTERED_FIGURES.get(key);
+        System.out.println(clazzName);
+        return (T) Class.forName(clazzName).getConstructor(Integer.class, boolean.class).newInstance(position, white);
+    }
+
+    static Set<String> getFigureNames() {
+        return REGISTERED_FIGURES.keySet();
     }
 
     public boolean move(int position) {
@@ -63,7 +73,7 @@ public abstract class AbstractFigure implements Figure {
         return isValid;
     }
 
-    void addToRegisteredFigures(String key, String value) {
+    private void addToRegisteredFigures(String key, String value) {
         REGISTERED_FIGURES.put(key, value);
     }
 

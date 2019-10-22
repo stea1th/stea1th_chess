@@ -15,7 +15,7 @@ public class KingRule extends AbstractRule {
 
     @Override
     public void register() {
-        addToRegisteredRules("Q", this.getClass().getName());
+        addToRegisteredRules("K", this.getClass().getName());
     }
 
     @Override

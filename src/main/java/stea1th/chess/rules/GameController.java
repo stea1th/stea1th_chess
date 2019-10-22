@@ -3,12 +3,10 @@ package stea1th.chess.rules;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import lombok.Getter;
-import stea1th.chess.figures.Bishop;
-import stea1th.chess.figures.Knight;
-import stea1th.chess.figures.Pawn;
-import stea1th.chess.figures.Figure;
+import stea1th.chess.figures.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -36,8 +34,18 @@ public class GameController {
 //        figuresInGame.put(knight.getPosition(), knight);
 //        Figure pa = new Pawn();
         Config config = ConfigFactory.parseResources("default.conf");
-        String p = "pawn";
-        config.getStringList(p + ".white.positions").forEach(System.out::println);
+        FigureFactory.getFigureNames().forEach(i-> {
+            List<String> list = config.getStringList(i + ".white.positions");
+            if(!list.isEmpty()){
+                list.forEach(s-> {
+                    Figure figure = FigureFactory.createFigure(i, Integer.valueOf(s), true);
+                    assert figure != null;
+                    figuresInGame.put(figure.getPosition(), figure);
+                });
+            }
+
+        });
+
     }
 
     public boolean moveFigure(Integer[] positions) {

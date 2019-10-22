@@ -10,6 +10,9 @@ import java.util.stream.IntStream;
 
 public class ConsoleHelper {
 
+    private ConsoleHelper() {
+    }
+
     private static final Scanner SCANNER = new Scanner(System.in);
 
     public static String readFromConsole() {
@@ -33,7 +36,7 @@ public class ConsoleHelper {
         System.out.println("Killed black: " + deadPieces[1]);
     }
 
-    public static void printForWhite(Map<Integer, Figure> figures) {
+    private static void printForWhite(Map<Integer, Figure> figures) {
         String emptyString = "   ";
         for (int row = 0; row < BOARD_SIZE; row++) {
             System.out.println();
@@ -90,7 +93,7 @@ public class ConsoleHelper {
         return new String[]{wDead.toString(), bDead.toString()};
     }
 
-    public static String getEmptyCell(int row, int num) {
+    private static String getEmptyCell(int row, int num) {
         String white = "   ";
         String black = "===";
         if (row % 2 == 0) {

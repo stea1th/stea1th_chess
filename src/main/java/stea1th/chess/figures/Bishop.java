@@ -1,6 +1,8 @@
 package stea1th.chess.figures;
 
+import lombok.ToString;
 
+@ToString
 public class Bishop extends AbstractFigure {
 
     private Bishop(String notation, String name, Integer position, boolean white) {

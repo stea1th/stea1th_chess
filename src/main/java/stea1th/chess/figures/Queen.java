@@ -1,5 +1,8 @@
 package stea1th.chess.figures;
 
+import lombok.ToString;
+
+@ToString
 public class Queen extends AbstractFigure {
 
     private Queen(String notation, String name, Integer position, boolean white) {

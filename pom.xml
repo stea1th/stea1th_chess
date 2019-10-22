@@ -55,7 +55,7 @@
         </plugins>
         <resources>
             <resource>
-                <directory>src/resource/config</directory>
+                <directory>src/resource</directory>
             </resource>
         </resources>
     </build>

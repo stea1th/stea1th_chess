@@ -1,5 +1,8 @@
 package stea1th.chess.figures;
 
+import lombok.ToString;
+
+@ToString
 public class Rook extends AbstractFigure {
 
     private Rook(String notation, String name, Integer position, boolean white) {
