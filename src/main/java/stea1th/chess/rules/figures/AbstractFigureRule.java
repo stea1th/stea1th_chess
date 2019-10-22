@@ -4,9 +4,7 @@ import lombok.*;
 import stea1th.chess.pieces.Piece;
 import stea1th.chess.rules.enums.Direction;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static stea1th.chess.rules.enums.Direction.MAX;
 import static stea1th.chess.rules.enums.Direction.MIN;
@@ -49,13 +47,17 @@ public abstract class AbstractFigureRule implements FigureRule {
 
     public abstract void allPossibleMoves(Piece piece);
 
-    private void addToPossibleMoves(Integer position) {
+    void addToPossibleMoves(Integer position) {
         if (position != null)
             allPossibleMoves.put("" + position, position);
     }
 
     void addToDirections(Direction dir) {
         directions.add(dir);
+    }
+
+    void addToDirections(Direction[] dirs) {
+        directions.addAll(Arrays.asList(dirs));
     }
 
     private static boolean isInBorders(Integer position) {
@@ -78,8 +80,13 @@ public abstract class AbstractFigureRule implements FigureRule {
         clear();
         getDirections().forEach(i -> {
             Integer tempPosition = getAdjoiningPosition(position, i);
-            addToPossibleMoves(isPieceOnTheWay(tempPosition) && isSameColor(tempPosition) ? null : tempPosition);
+            addToPossibleMoves(isPieceOnTheWay(tempPosition) && (isSameColor(tempPosition) || mainPiece.getNotation().equals("p")) ? null : tempPosition);
         });
+    }
+
+    boolean isEnemyNearby(Integer position) {
+        Piece piece = figuresInGame.get(position);
+        return (piece != null && !piece.isWhite() == mainPiece.isWhite());
     }
 
     void allCellsTurn(Integer position) {
@@ -97,7 +104,7 @@ public abstract class AbstractFigureRule implements FigureRule {
         });
     }
 
-    private static Integer getAdjoiningPosition(int position, Direction direction) {
+    static Integer getAdjoiningPosition(int position, Direction direction) {
         int result = position + direction.value;
         return isInBorders(result) ? result : null;
     }

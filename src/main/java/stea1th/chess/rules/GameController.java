@@ -7,21 +7,24 @@ import stea1th.chess.pieces.Piece;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameController {
 
     @Getter
     private Map<Integer, Piece> figuresInGame = new HashMap<>();
 
+    private static final AtomicInteger count = new AtomicInteger(100);
+
+    public GameController() {
+        init();
+    }
+
     public void init() {
         Piece pawn = new Pawn(53, true);
         Piece pawn2 = new Pawn(54, true);
-        Piece pawn3 = new Pawn(14, false);
+        Piece pawn3 = new Pawn(45, false);
         Piece bishop = new Bishop(59, true);
-        pawn.register();
-        pawn2.register();
-        pawn3.register();
-        bishop.register();
         figuresInGame.put(pawn.getPosition(), pawn);
         figuresInGame.put(pawn2.getPosition(), pawn2);
         figuresInGame.put(pawn3.getPosition(), pawn3);
@@ -34,10 +37,22 @@ public class GameController {
         if(piece != null){
             piece.setFiguresInGame(figuresInGame);
             figuresInGame.remove(fromPosition);
-            piece.move(positions[1]);
+            if(piece.move(positions[1])) {
+                killEnemy(piece);
+            }
             figuresInGame.put(piece.getPosition(), piece);
             return true;
         }
         return false;
+    }
+
+    private void killEnemy(Piece piece) {
+        int newPosition = piece.getPosition();
+        Piece anotherPiece = figuresInGame.get(newPosition);
+        if(anotherPiece != null && anotherPiece.isWhite() != piece.isWhite()) {
+            figuresInGame.remove(newPosition);
+            anotherPiece.setAlive(false);
+            figuresInGame.put(count.addAndGet(anotherPiece.getPosition()), anotherPiece);
+        }
     }
 }

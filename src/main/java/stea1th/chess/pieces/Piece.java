@@ -14,11 +14,13 @@ public interface Piece {
 
     boolean move(int newPosition);
 
-    void register();
-
     void setFiguresInGame(Map<Integer, Piece> figuresInGame);
 
     boolean isWhite();
+
+    boolean isAlive();
+
+    void setAlive(boolean alive);
 
 
 }

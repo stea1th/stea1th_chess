@@ -27,17 +27,17 @@ public abstract class AbstractPiece implements Piece {
 
     AbstractPiece(String notation, String name, Integer position, boolean white) {
         this.notation = notation;
-        this.name = name;
+        this.name = (white? "w" : "b") + notation;
         this.position = position;
         this.white = white;
         this.alive = true;
         this.movesCount = 0;
-
+        register();
     }
 
     private final static Map<String, String> REGISTERED_FIGURES = new HashMap<>();
 
-    public void register() {
+    private void register() {
         this.figureRule = loadRule();
     }
 

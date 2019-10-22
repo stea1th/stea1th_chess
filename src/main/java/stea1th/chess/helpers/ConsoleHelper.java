@@ -25,20 +25,38 @@ public class ConsoleHelper {
 
 
     public static void printBoard(Map<Integer, Piece> figures) {
-
+        String[] deadPieces = getAllDeadPieces(figures);
+        System.out.println("Killed white: " + deadPieces[0]);
         for (int row = 0; row < BOARD_SIZE; row++) {
             System.out.println();
             System.out.println("---------------------------------");
             for (int column = 1; column <= BOARD_SIZE; column++) {
                 int num = column + BOARD_SIZE * row;
                 Piece piece = figures.get(num);
-                String cell = piece != null ? " " + piece.getNotation() + " " : getEmptyCell(row, num);
+                String cell = piece != null && piece.isAlive() ? " " + piece.getName() : getEmptyCell(row, num);
                 System.out.print("|" + cell);
             }
             System.out.print("|");
         }
         System.out.println();
         System.out.println("---------------------------------");
+
+        System.out.println("Killed black: " + deadPieces[1]);
+    }
+
+    private static String[] getAllDeadPieces(Map<Integer, Piece> figures) {
+        StringBuilder wDead = new StringBuilder();
+        StringBuilder bDead = new StringBuilder();
+
+        for (Piece piece : figures.values()) {
+            if (!piece.isAlive()) {
+                if (piece.isWhite())
+                    wDead.append(piece.getName()).append(", ");
+                else
+                    bDead.append(piece.getName()).append(", ");
+            }
+        }
+        return new String[]{wDead.toString(), bDead.toString()};
     }
 
     public static String getEmptyCell(int row, int num) {

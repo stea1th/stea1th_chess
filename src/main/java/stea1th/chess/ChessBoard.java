@@ -8,7 +8,6 @@ public class ChessBoard {
 
     public void play() {
         Game game = new Game();
-        game.init();
         game.play();
     }
 }

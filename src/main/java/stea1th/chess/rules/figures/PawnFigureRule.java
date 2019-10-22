@@ -6,8 +6,7 @@ import stea1th.chess.rules.enums.Direction;
 
 import java.util.HashSet;
 
-import static stea1th.chess.rules.enums.Direction.NORD;
-import static stea1th.chess.rules.enums.Direction.SOUTH;
+import static stea1th.chess.rules.enums.Direction.*;
 
 @ToString
 public class PawnFigureRule extends AbstractFigureRule {
@@ -23,8 +22,18 @@ public class PawnFigureRule extends AbstractFigureRule {
 
     @Override
     public void allPossibleMoves(Piece piece) {
-        Direction dir = piece.isWhite()? NORD : SOUTH;
+        Direction dir = piece.isWhite() ? NORD : SOUTH;
         addToDirections(dir);
         oneCellTurn(piece.getPosition());
+        pawnMovesIfEnemyNearby(piece);
+    }
+
+    private void pawnMovesIfEnemyNearby(Piece piece) {
+        Direction[] dirs = piece.isWhite() ? new Direction[]{NORDEAST, NORDWEST} : new Direction[]{SOUTHEAST, SOUTHWEST};
+        for (Direction dir: dirs) {
+            Integer position = getAdjoiningPosition(piece.getPosition(), dir);
+            if(isEnemyNearby(position))
+                addToPossibleMoves(position);
+        }
     }
 }
