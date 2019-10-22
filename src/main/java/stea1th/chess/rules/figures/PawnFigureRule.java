@@ -22,14 +22,14 @@ public class PawnFigureRule extends AbstractFigureRule {
 
     @Override
     public void allPossibleMoves(Piece piece) {
-        Direction dir = piece.isWhite() ? NORD : SOUTH;
+        Direction dir = piece.isWhite() ? NORTH : SOUTH;
         addToDirections(dir);
         oneCellTurn(piece.getPosition());
         pawnMovesIfEnemyNearby(piece);
     }
 
     private void pawnMovesIfEnemyNearby(Piece piece) {
-        Direction[] dirs = piece.isWhite() ? new Direction[]{NORDEAST, NORDWEST} : new Direction[]{SOUTHEAST, SOUTHWEST};
+        Direction[] dirs = piece.isWhite() ? new Direction[]{NORTH_EAST, NORTH_WEST} : new Direction[]{SOUTH_EAST, SOUTH_WEST};
         for (Direction dir: dirs) {
             Integer position = getAdjoiningPosition(piece.getPosition(), dir);
             if(isEnemyNearby(position))

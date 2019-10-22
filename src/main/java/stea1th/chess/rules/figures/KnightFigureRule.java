@@ -9,20 +9,19 @@ import java.util.HashSet;
 import static stea1th.chess.rules.enums.Direction.*;
 
 @ToString
-public class BishopFigureRule extends AbstractFigureRule {
+public class KnightFigureRule extends AbstractFigureRule {
 
-    public BishopFigureRule() {
-        super(new HashSet<>(Arrays.asList(NORTH_EAST, NORTH_WEST, SOUTH_EAST, SOUTH_WEST)));
+    public KnightFigureRule() {
+        super(new HashSet<>(Arrays.asList(NORTH_LEFT, NORTH_RIGHT, SOUTH_LEFT, SOUTH_RIGHT, WEST_UP, WEST_DOWN, EAST_UP, EAST_DOWN)));
     }
 
     @Override
     public void register() {
-        addToRegisteredRules("B", this.getClass().getName());
+        addToRegisteredRules("N", this.getClass().getName());
     }
 
     @Override
     public void allPossibleMoves(Piece piece) {
-        allCellsTurn(piece.getPosition());
+        oneCellTurn(piece.getPosition());
     }
-
 }

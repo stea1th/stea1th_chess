@@ -27,8 +27,7 @@ public class ConsoleHelper {
     public static void printBoard(Map<Integer, Piece> figures) {
         String[] deadPieces = getAllDeadPieces(figures);
         System.out.println("Killed white: " + deadPieces[0]);
-        printForBlack(figures);
-
+        printForWhite(figures);
         System.out.println("Killed black: " + deadPieces[1]);
     }
 

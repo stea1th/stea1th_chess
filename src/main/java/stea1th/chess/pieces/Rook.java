@@ -9,5 +9,4 @@ public class Rook extends AbstractPiece {
     public Rook(Integer position, boolean white) {
         this("R", "Rook", position, white);
     }
-
 }

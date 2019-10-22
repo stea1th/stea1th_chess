@@ -2,6 +2,7 @@ package stea1th.chess.rules;
 
 import lombok.Getter;
 import stea1th.chess.pieces.Bishop;
+import stea1th.chess.pieces.Knight;
 import stea1th.chess.pieces.Pawn;
 import stea1th.chess.pieces.Piece;
 
@@ -25,10 +26,12 @@ public class GameController {
         Piece pawn2 = new Pawn(54, true);
         Piece pawn3 = new Pawn(45, false);
         Piece bishop = new Bishop(59, true);
+        Piece knight = new Knight(58, true);
         figuresInGame.put(pawn.getPosition(), pawn);
         figuresInGame.put(pawn2.getPosition(), pawn2);
         figuresInGame.put(pawn3.getPosition(), pawn3);
         figuresInGame.put(bishop.getPosition(), bishop);
+        figuresInGame.put(knight.getPosition(), knight);
     }
 
     public boolean moveFigure(Integer[] positions) {
