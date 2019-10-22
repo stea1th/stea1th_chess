@@ -5,6 +5,8 @@ import stea1th.chess.figures.Figure;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class ConsoleHelper {
 
@@ -32,19 +34,28 @@ public class ConsoleHelper {
     }
 
     public static void printForWhite(Map<Integer, Figure> figures) {
+        String emptyString = "   ";
         for (int row = 0; row < BOARD_SIZE; row++) {
             System.out.println();
-            System.out.println("---------------------------------");
-            for (int column = 1; column <= BOARD_SIZE; column++) {
-                int num = column + BOARD_SIZE * row;
-                Figure figure = figures.get(num);
-                String cell = figure != null && figure.isAlive() ? " " + figure.getName() : getEmptyCell(row, num);
-                System.out.print("|" + cell);
+            System.out.println(emptyString + "---------------------------------");
+            for (int column = 0; column <= BOARD_SIZE; column++) {
+                if (column == 0) {
+                    System.out.print(" " + (BOARD_SIZE - row) + " ");
+                } else {
+                    int num = column + BOARD_SIZE * row;
+                    Figure figure = figures.get(num);
+                    String cell = figure != null && figure.isAlive() ? " " + figure.getName() : getEmptyCell(row, num);
+                    System.out.print("|" + cell);
+                }
             }
             System.out.print("|");
         }
         System.out.println();
-        System.out.println("---------------------------------");
+        System.out.println(emptyString + "---------------------------------");
+
+        emptyString += IntStream.rangeClosed(65, 72).mapToObj(i-> (char) i).map(i-> Character.toString(i)).collect(Collectors.joining("   ", "  ", "  "));
+        System.out.println(emptyString);
+
     }
 
     public static void printForBlack(Map<Integer, Figure> figures) {
@@ -52,7 +63,7 @@ public class ConsoleHelper {
             System.out.println();
             System.out.println("---------------------------------");
             for (int column = 0; column < BOARD_SIZE; column++) {
-                int num = BOARD_SIZE * row -column;
+                int num = BOARD_SIZE * row - column;
                 Figure figure = figures.get(num);
                 String cell = figure != null && figure.isAlive() ? " " + figure.getName() : getEmptyCell(row, num);
                 System.out.print("|" + cell);
@@ -70,9 +81,9 @@ public class ConsoleHelper {
         for (Figure figure : figures.values()) {
             if (!figure.isAlive()) {
                 if (figure.isWhite())
-                    wDead.append(wDead.length() == 0? figure.getName() : ", " + figure.getName());
+                    wDead.append(wDead.length() == 0 ? figure.getName() : ", " + figure.getName());
                 else
-                    bDead.append(bDead.length() == 0? figure.getName() : ", " + figure.getName());
+                    bDead.append(bDead.length() == 0 ? figure.getName() : ", " + figure.getName());
             }
         }
         return new String[]{wDead.toString(), bDead.toString()};
@@ -103,7 +114,7 @@ public class ConsoleHelper {
     }
 
     public static void printForBlackNumbers() {
-        for (int row =  BOARD_SIZE; row > 0; row--) {
+        for (int row = BOARD_SIZE; row > 0; row--) {
             System.out.println();
             System.out.println("---------------------------------");
             for (int column = 0; column < BOARD_SIZE; column++) {
