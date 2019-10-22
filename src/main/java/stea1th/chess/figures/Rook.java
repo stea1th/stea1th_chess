@@ -1,6 +1,6 @@
-package stea1th.chess.pieces;
+package stea1th.chess.figures;
 
-public class Rook extends AbstractPiece {
+public class Rook extends AbstractFigure {
 
     public Rook(String notation, String name, Integer position, boolean white) {
         super(notation, name, position, white);

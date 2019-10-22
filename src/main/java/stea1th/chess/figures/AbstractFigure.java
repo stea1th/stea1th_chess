@@ -1,11 +1,11 @@
-package stea1th.chess.pieces;
+package stea1th.chess.figures;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import stea1th.chess.rules.figures.FigureRule;
+import stea1th.chess.rules.figures.Rule;
 import stea1th.chess.rules.figures.FigureRuleFactory;
 
 import java.util.HashMap;
@@ -14,7 +14,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class AbstractPiece implements Piece {
+public abstract class AbstractFigure implements Figure {
 
     @Getter
     private String notation;
@@ -23,9 +23,9 @@ public abstract class AbstractPiece implements Piece {
     private boolean white;
     private boolean alive;
     private int movesCount;
-    private FigureRule figureRule;
+    private Rule rule;
 
-    AbstractPiece(String notation, String name, Integer position, boolean white) {
+    AbstractFigure(String notation, String name, Integer position, boolean white) {
         this.notation = notation;
         this.name = (white? "w" : "b") + notation;
         this.position = position;
@@ -38,7 +38,7 @@ public abstract class AbstractPiece implements Piece {
     private final static Map<String, String> REGISTERED_FIGURES = new HashMap<>();
 
     private void register() {
-        this.figureRule = loadRule();
+        this.rule = loadRule();
     }
 
     public boolean move(int position){
@@ -49,14 +49,14 @@ public abstract class AbstractPiece implements Piece {
     }
 
     private boolean isTurnValid(int newPosition) {
-        return figureRule.getAllPossibleMoves(this).get(String.valueOf(newPosition)) != null;
+        return rule.getAllPossibleMoves(this).get(String.valueOf(newPosition)) != null;
     }
 
-    private FigureRule loadRule() {
+    private Rule loadRule() {
         return FigureRuleFactory.createRule(this);
     }
 
-    public void setFiguresInGame(Map<Integer, Piece> figuresInGame) {
-        figureRule.setFiguresInGame(figuresInGame);
+    public void setFiguresInGame(Map<Integer, Figure> figuresInGame) {
+        rule.setFiguresInGame(figuresInGame);
     }
 }

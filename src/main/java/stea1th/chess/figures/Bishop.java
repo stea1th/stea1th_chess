@@ -1,6 +1,6 @@
-package stea1th.chess.pieces;
+package stea1th.chess.figures;
 
-public class Bishop extends AbstractPiece {
+public class Bishop extends AbstractFigure {
 
     private Bishop(String notation, String name, Integer position, boolean white) {
         super(notation, name, position, white);

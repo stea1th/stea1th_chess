@@ -1,10 +1,10 @@
 package stea1th.chess.rules;
 
 import lombok.Getter;
-import stea1th.chess.pieces.Bishop;
-import stea1th.chess.pieces.Knight;
-import stea1th.chess.pieces.Pawn;
-import stea1th.chess.pieces.Piece;
+import stea1th.chess.figures.Bishop;
+import stea1th.chess.figures.Knight;
+import stea1th.chess.figures.Pawn;
+import stea1th.chess.figures.Figure;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class GameController {
 
     @Getter
-    private Map<Integer, Piece> figuresInGame = new HashMap<>();
+    private Map<Integer, Figure> figuresInGame = new HashMap<>();
 
     private static final AtomicInteger count = new AtomicInteger(100);
 
@@ -22,11 +22,11 @@ public class GameController {
     }
 
     public void init() {
-        Piece pawn = new Pawn(53, true);
-        Piece pawn2 = new Pawn(54, true);
-        Piece pawn3 = new Pawn(45, false);
-        Piece bishop = new Bishop(59, true);
-        Piece knight = new Knight(58, true);
+        Figure pawn = new Pawn(53, true);
+        Figure pawn2 = new Pawn(54, true);
+        Figure pawn3 = new Pawn(45, false);
+        Figure bishop = new Bishop(59, true);
+        Figure knight = new Knight(58, true);
         figuresInGame.put(pawn.getPosition(), pawn);
         figuresInGame.put(pawn2.getPosition(), pawn2);
         figuresInGame.put(pawn3.getPosition(), pawn3);
@@ -36,26 +36,26 @@ public class GameController {
 
     public boolean moveFigure(Integer[] positions) {
         Integer fromPosition = positions[0];
-        Piece piece = figuresInGame.get(fromPosition);
-        if(piece != null){
-            piece.setFiguresInGame(figuresInGame);
+        Figure figure = figuresInGame.get(fromPosition);
+        if(figure != null){
+            figure.setFiguresInGame(figuresInGame);
             figuresInGame.remove(fromPosition);
-            if(piece.move(positions[1])) {
-                killEnemy(piece);
+            if(figure.move(positions[1])) {
+                killEnemy(figure);
             }
-            figuresInGame.put(piece.getPosition(), piece);
+            figuresInGame.put(figure.getPosition(), figure);
             return true;
         }
         return false;
     }
 
-    private void killEnemy(Piece piece) {
-        int newPosition = piece.getPosition();
-        Piece anotherPiece = figuresInGame.get(newPosition);
-        if(anotherPiece != null && anotherPiece.isWhite() != piece.isWhite()) {
+    private void killEnemy(Figure figure) {
+        int newPosition = figure.getPosition();
+        Figure anotherFigure = figuresInGame.get(newPosition);
+        if(anotherFigure != null && anotherFigure.isWhite() != figure.isWhite()) {
             figuresInGame.remove(newPosition);
-            anotherPiece.setAlive(false);
-            figuresInGame.put(count.get(), anotherPiece);
+            anotherFigure.setAlive(false);
+            figuresInGame.put(count.get(), anotherFigure);
         }
     }
 }

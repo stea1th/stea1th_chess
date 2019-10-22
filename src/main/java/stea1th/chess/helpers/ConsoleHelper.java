@@ -1,6 +1,6 @@
 package stea1th.chess.helpers;
 
-import stea1th.chess.pieces.Piece;
+import stea1th.chess.figures.Figure;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -24,21 +24,21 @@ public class ConsoleHelper {
     private final static int BOARD_SIZE = 8;
 
 
-    public static void printBoard(Map<Integer, Piece> figures) {
+    public static void printBoard(Map<Integer, Figure> figures) {
         String[] deadPieces = getAllDeadPieces(figures);
         System.out.println("Killed white: " + deadPieces[0]);
         printForWhite(figures);
         System.out.println("Killed black: " + deadPieces[1]);
     }
 
-    public static void printForWhite(Map<Integer, Piece> figures) {
+    public static void printForWhite(Map<Integer, Figure> figures) {
         for (int row = 0; row < BOARD_SIZE; row++) {
             System.out.println();
             System.out.println("---------------------------------");
             for (int column = 1; column <= BOARD_SIZE; column++) {
                 int num = column + BOARD_SIZE * row;
-                Piece piece = figures.get(num);
-                String cell = piece != null && piece.isAlive() ? " " + piece.getName() : getEmptyCell(row, num);
+                Figure figure = figures.get(num);
+                String cell = figure != null && figure.isAlive() ? " " + figure.getName() : getEmptyCell(row, num);
                 System.out.print("|" + cell);
             }
             System.out.print("|");
@@ -47,14 +47,14 @@ public class ConsoleHelper {
         System.out.println("---------------------------------");
     }
 
-    public static void printForBlack(Map<Integer, Piece> figures) {
+    public static void printForBlack(Map<Integer, Figure> figures) {
         for (int row = BOARD_SIZE; row > 0; row--) {
             System.out.println();
             System.out.println("---------------------------------");
             for (int column = 0; column < BOARD_SIZE; column++) {
                 int num = BOARD_SIZE * row -column;
-                Piece piece = figures.get(num);
-                String cell = piece != null && piece.isAlive() ? " " + piece.getName() : getEmptyCell(row, num);
+                Figure figure = figures.get(num);
+                String cell = figure != null && figure.isAlive() ? " " + figure.getName() : getEmptyCell(row, num);
                 System.out.print("|" + cell);
             }
             System.out.print("|");
@@ -63,16 +63,16 @@ public class ConsoleHelper {
         System.out.println("---------------------------------");
     }
 
-    private static String[] getAllDeadPieces(Map<Integer, Piece> figures) {
+    private static String[] getAllDeadPieces(Map<Integer, Figure> figures) {
         StringBuilder wDead = new StringBuilder();
         StringBuilder bDead = new StringBuilder();
 
-        for (Piece piece : figures.values()) {
-            if (!piece.isAlive()) {
-                if (piece.isWhite())
-                    wDead.append(wDead.length() == 0? piece.getName() : ", " + piece.getName());
+        for (Figure figure : figures.values()) {
+            if (!figure.isAlive()) {
+                if (figure.isWhite())
+                    wDead.append(wDead.length() == 0? figure.getName() : ", " + figure.getName());
                 else
-                    bDead.append(bDead.length() == 0? piece.getName() : ", " + piece.getName());
+                    bDead.append(bDead.length() == 0? figure.getName() : ", " + figure.getName());
             }
         }
         return new String[]{wDead.toString(), bDead.toString()};

@@ -1,7 +1,7 @@
 package stea1th.chess.rules.figures;
 
 import lombok.*;
-import stea1th.chess.pieces.Piece;
+import stea1th.chess.figures.Figure;
 import stea1th.chess.rules.enums.Direction;
 
 import java.util.*;
@@ -12,10 +12,10 @@ import static stea1th.chess.rules.enums.Direction.MIN;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-public abstract class AbstractFigureRule implements FigureRule {
+public abstract class AbstractRule implements Rule {
 
     @Setter
-    private Piece mainPiece;
+    private Figure mainFigure;
 
     private final static Map<String, String> REGISTERED_RULES = new HashMap<>();
 
@@ -26,10 +26,10 @@ public abstract class AbstractFigureRule implements FigureRule {
     private final Set<Direction> directions;
 
     @Setter
-    private Map<Integer, Piece> figuresInGame = new HashMap<>();
+    private Map<Integer, Figure> figuresInGame = new HashMap<>();
 
-    public Map<String, Integer> getAllPossibleMoves(Piece piece) {
-        allPossibleMoves(piece);
+    public Map<String, Integer> getAllPossibleMoves(Figure figure) {
+        allPossibleMoves(figure);
         return allPossibleMoves;
     }
 
@@ -40,12 +40,12 @@ public abstract class AbstractFigureRule implements FigureRule {
     }
 
     @SuppressWarnings(value = "unchecked")
-    static <T extends AbstractFigureRule> T newInstance(Piece piece) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-        String clazzName = REGISTERED_RULES.get(piece.getNotation());
+    static <T extends AbstractRule> T newInstance(Figure figure) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        String clazzName = REGISTERED_RULES.get(figure.getNotation());
         return (T) Class.forName(clazzName != null ? clazzName : REGISTERED_RULES.get(" ")).newInstance();
     }
 
-    public abstract void allPossibleMoves(Piece piece);
+    public abstract void allPossibleMoves(Figure figure);
 
     void addToPossibleMoves(Integer position) {
         if (position != null)
@@ -69,7 +69,7 @@ public abstract class AbstractFigureRule implements FigureRule {
     }
 
     private boolean isSameColor(Integer position) {
-        return figuresInGame.get(position).isWhite() == mainPiece.isWhite();
+        return figuresInGame.get(position).isWhite() == mainFigure.isWhite();
     }
 
     private void clear() {
@@ -80,13 +80,13 @@ public abstract class AbstractFigureRule implements FigureRule {
         clear();
         getDirections().forEach(i -> {
             Integer tempPosition = getAdjoiningPosition(position, i);
-            addToPossibleMoves(isPieceOnTheWay(tempPosition) && (isSameColor(tempPosition) || mainPiece.getNotation().equals("p")) ? null : tempPosition);
+            addToPossibleMoves(isPieceOnTheWay(tempPosition) && (isSameColor(tempPosition) || mainFigure.getNotation().equals("p")) ? null : tempPosition);
         });
     }
 
     boolean isEnemyNearby(Integer position) {
-        Piece piece = figuresInGame.get(position);
-        return (piece != null && !piece.isWhite() == mainPiece.isWhite());
+        Figure figure = figuresInGame.get(position);
+        return (figure != null && !figure.isWhite() == mainFigure.isWhite());
     }
 
     void allCellsTurn(Integer position) {

@@ -1,7 +1,7 @@
 package stea1th.chess.rules.figures;
 
 import lombok.ToString;
-import stea1th.chess.pieces.Piece;
+import stea1th.chess.figures.Figure;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -9,9 +9,9 @@ import java.util.HashSet;
 import static stea1th.chess.rules.enums.Direction.*;
 
 @ToString
-public class BishopFigureRule extends AbstractFigureRule {
+public class BishopRule extends AbstractRule {
 
-    public BishopFigureRule() {
+    public BishopRule() {
         super(new HashSet<>(Arrays.asList(NORTH_EAST, NORTH_WEST, SOUTH_EAST, SOUTH_WEST)));
     }
 
@@ -21,8 +21,8 @@ public class BishopFigureRule extends AbstractFigureRule {
     }
 
     @Override
-    public void allPossibleMoves(Piece piece) {
-        allCellsTurn(piece.getPosition());
+    public void allPossibleMoves(Figure figure) {
+        allCellsTurn(figure.getPosition());
     }
 
 }
