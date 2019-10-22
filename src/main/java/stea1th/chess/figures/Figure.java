@@ -10,6 +10,10 @@ public interface Figure {
 
     Integer getPosition();
 
+    String getView();
+
+    void register();
+
     void setPosition(Integer position);
 
     boolean move(int newPosition);

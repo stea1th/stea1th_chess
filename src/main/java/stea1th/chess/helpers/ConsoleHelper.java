@@ -44,7 +44,7 @@ public class ConsoleHelper {
                 } else {
                     int num = column + BOARD_SIZE * row;
                     Figure figure = figures.get(num);
-                    String cell = figure != null && figure.isAlive() ? " " + figure.getName() : getEmptyCell(row, num);
+                    String cell = figure != null && figure.isAlive() ? " " + figure.getView() : getEmptyCell(row, num);
                     System.out.print("|" + cell);
                 }
             }
@@ -57,7 +57,6 @@ public class ConsoleHelper {
                 .mapToObj(i -> (char) i)
                 .map(i -> Character.toString(i))
                 .collect(Collectors.joining(emptyString, "  ", "  ")));
-
     }
 
     public static void printForBlack(Map<Integer, Figure> figures) {
@@ -67,7 +66,7 @@ public class ConsoleHelper {
             for (int column = 0; column < BOARD_SIZE; column++) {
                 int num = BOARD_SIZE * row - column;
                 Figure figure = figures.get(num);
-                String cell = figure != null && figure.isAlive() ? " " + figure.getName() : getEmptyCell(row, num);
+                String cell = figure != null && figure.isAlive() ? " " + figure.getView() : getEmptyCell(row, num);
                 System.out.print("|" + cell);
             }
             System.out.print("|");
@@ -83,9 +82,9 @@ public class ConsoleHelper {
         for (Figure figure : figures.values()) {
             if (!figure.isAlive()) {
                 if (figure.isWhite())
-                    wDead.append(wDead.length() == 0 ? figure.getName() : ", " + figure.getName());
+                    wDead.append(wDead.length() == 0 ? figure.getView() : ", " + figure.getView());
                 else
-                    bDead.append(bDead.length() == 0 ? figure.getName() : ", " + figure.getName());
+                    bDead.append(bDead.length() == 0 ? figure.getView() : ", " + figure.getView());
             }
         }
         return new String[]{wDead.toString(), bDead.toString()};

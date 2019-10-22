@@ -8,12 +8,7 @@
     <artifactId>stea1th_chess</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <properties>
-        <java.version>1.8</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <lombok.version>1.18.10</lombok.version>
-    </properties>
+
     <build>
         <plugins>
             <plugin>
@@ -57,9 +52,21 @@
                     </execution>
                 </executions>
             </plugin>
-
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/resource/config</directory>
+            </resource>
+        </resources>
     </build>
+    <properties>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <lombok.version>1.18.10</lombok.version>
+        <reflections.version>0.9.11</reflections.version>
+        <typesafe.version>1.4.0</typesafe.version>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -71,9 +78,12 @@
         <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
-            <version>0.9.11</version>
+            <version>${reflections.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe</groupId>
+            <artifactId>config</artifactId>
+            <version>${typesafe.version}</version>
         </dependency>
     </dependencies>
-
-
 </project>
