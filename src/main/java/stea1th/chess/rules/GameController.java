@@ -5,7 +5,9 @@ import com.typesafe.config.ConfigFactory;
 import lombok.Getter;
 import stea1th.chess.figures.Figure;
 import stea1th.chess.figures.FigureFactory;
+import stea1th.chess.figures.King;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +52,7 @@ public class GameController {
             if (figure.move(positions[1])) {
                 killEnemy(figure);
             }
+            isEnemyKingAttacked(figure.isWhite());
             figuresInGame.put(figure.getPosition(), figure);
         }
         return isAccepted;
@@ -71,10 +74,18 @@ public class GameController {
                 .stream()
                 .filter(i-> i.isWhite() == isWhite && i.isAlive())
                 .forEach(i-> i.setActive(true));
-//        figuresInGame.values().forEach(i-> System.out.println(i.getName() +" -> " +i.isAlive()));
     }
 
     private void setAllFiguresInactive() {
         figuresInGame.values().forEach(i-> i.setActive(false));
+    }
+
+    private void isEnemyKingAttacked(boolean isWhite) {
+        List<Figure> figures = new ArrayList<>(figuresInGame.values());
+        int kingPosition = figures.stream().filter(i-> i instanceof King && i.isWhite() != isWhite).findFirst().get().getPosition();
+        for(Figure figure : figures) {
+
+        }
+
     }
 }

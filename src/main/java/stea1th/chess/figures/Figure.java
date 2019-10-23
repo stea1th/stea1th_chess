@@ -1,5 +1,7 @@
 package stea1th.chess.figures;
 
+import stea1th.chess.rules.figures.Rule;
+
 import java.util.Map;
 
 public interface Figure {
@@ -11,6 +13,8 @@ public interface Figure {
     Integer getPosition();
 
     String getView();
+
+    Rule getRule();
 
     boolean isActive();
 
