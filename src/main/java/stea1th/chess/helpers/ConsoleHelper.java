@@ -3,6 +3,7 @@ package stea1th.chess.helpers;
 import stea1th.chess.figures.Figure;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -151,5 +152,44 @@ public class ConsoleHelper {
         }
         System.out.println();
         System.out.println("---------------------------------");
+    }
+
+    public static Map<String, String> createPlayers() {
+        Map<String, String> players = new HashMap<>();
+        while (players.size() < 2) {
+            String name = createName();
+            String color = chooseColor(players);
+            System.out.println("Your color: " + color);
+            players.put(color, name);
+        }
+        return players;
+    }
+
+    private static String createName() {
+        System.out.print("Enter your name: ");
+        return SCANNER.next();
+    }
+
+    private static String chooseColor(Map<String, String> players) {
+        String userChoice;
+        String color;
+        if (players.size() != 0) {
+            color = players.get("white") != null ? "black" : "white";
+        } else {
+            System.out.print("Choose your color: w/b?");
+            userChoice = SCANNER.next().toLowerCase();
+            switch (userChoice) {
+                case "w":
+                    color = "white";
+                    break;
+                case "b":
+                    color = "black";
+                    break;
+                default:
+                    color = chooseColor(players);
+                    break;
+            }
+        }
+        return color;
     }
 }

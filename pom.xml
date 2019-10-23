@@ -53,11 +53,11 @@
                 </executions>
             </plugin>
         </plugins>
-        <resources>
-            <resource>
-                <directory>src/resource</directory>
-            </resource>
-        </resources>
+<!--        <resources>-->
+<!--            <resource>-->
+<!--                <directory>src/resource</directory>-->
+<!--            </resource>-->
+<!--        </resources>-->
     </build>
     <properties>
         <java.version>1.8</java.version>

@@ -7,8 +7,9 @@ import stea1th.chess.helpers.ConsoleHelper;
 public class Main {
 
     public static void main(String[] args) {
-        ChessBoard board = new ChessBoard();
-        board.play();
+        ConsoleHelper.createPlayers().forEach((k, v)-> System.out.println(k + " -> " +v));
+//        ChessBoard board = new ChessBoard();
+//        board.play();
 //        ConsoleHelper.printForWhiteNumbers();
 //        FigureFactory.test();
 //        AbstractFigure.test();

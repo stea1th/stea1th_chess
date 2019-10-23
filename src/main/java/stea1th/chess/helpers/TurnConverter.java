@@ -2,7 +2,6 @@ package stea1th.chess.helpers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -15,7 +14,7 @@ public class TurnConverter {
 
     public static String convert(String message) {
         List<String> matched = match(message);
-        if(matched == null) {
+        if (matched == null) {
             return null;
         }
         return transformFromListToStr(matched);
