@@ -21,6 +21,7 @@ public class ConsoleHelper {
     }
 
     public static Integer[] parsePositions(String position) {
+        if(position == null) return null;
         return Arrays.stream(position.split(":"))
                 .map(Integer::valueOf)
                 .toArray(Integer[]::new);
@@ -97,11 +98,10 @@ public class ConsoleHelper {
     private static String getEmptyCell(int row, int num) {
         String white = "   ";
         String black = "===";
-        if (row % 2 == 0) {
+        if (row % 2 == 0)
             return num % 2 == 1 ? white : black;
-        } else {
+        else
             return num % 2 == 1 ? black : white;
-        }
     }
 
     public static void printForWhiteNumbers() {

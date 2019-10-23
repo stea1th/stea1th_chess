@@ -1,5 +1,6 @@
 package stea1th.chess;
 
+import stea1th.chess.helpers.TurnConverter;
 import stea1th.chess.rules.GameController;
 
 import static stea1th.chess.helpers.ConsoleHelper.*;
@@ -10,7 +11,8 @@ public class Game {
         GameController controller = new GameController();
         while (true) {
             printBoard(controller.getFiguresInGame());
-            controller.moveFigure(parsePositions(readFromConsole()));
+            controller.moveFigure(parsePositions(TurnConverter.convert(readFromConsole())));
+//            controller.moveFigure(parsePositions(message));
         }
     }
 

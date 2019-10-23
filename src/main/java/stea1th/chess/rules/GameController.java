@@ -22,7 +22,7 @@ public class GameController {
         init();
     }
 
-    public void init() {
+    private void init() {
         Config config = ConfigFactory.parseResources("default.conf");
         String[] configParams = new String[]{".white.positions", ".black.positions"};
         for (String param : configParams) {
@@ -40,6 +40,7 @@ public class GameController {
     }
 
     public boolean moveFigure(Integer[] positions) {
+        if(positions == null) return false;
         Integer fromPosition = positions[0];
         Figure figure = figuresInGame.get(fromPosition);
         if (figure != null) {
