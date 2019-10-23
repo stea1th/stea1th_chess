@@ -25,6 +25,7 @@ public abstract class AbstractFigure implements Figure {
     private Integer position;
     private boolean white;
     private boolean alive;
+    private boolean active;
     private int movesCount;
     private Rule rule;
 
@@ -41,6 +42,7 @@ public abstract class AbstractFigure implements Figure {
         this.position = position;
         this.white = white;
         this.alive = true;
+        this.active = false;
         this.movesCount = 0;
         this.rule = loadRule();
     }

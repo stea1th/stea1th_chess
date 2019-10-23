@@ -43,7 +43,8 @@ public class GameController {
         if (positions == null) return false;
         Integer fromPosition = positions[0];
         Figure figure = figuresInGame.get(fromPosition);
-        if (figure != null) {
+        boolean isAccepted = figure != null && figure.isActive();
+        if (isAccepted) {
             figure.setFiguresInGame(figuresInGame);
             figuresInGame.remove(fromPosition);
             if (figure.move(positions[1])) {
@@ -51,7 +52,7 @@ public class GameController {
             }
             figuresInGame.put(figure.getPosition(), figure);
         }
-        return figure != null;
+        return isAccepted;
     }
 
     private void killEnemy(Figure figure) {
@@ -62,5 +63,17 @@ public class GameController {
             anotherFigure.setAlive(false);
             figuresInGame.put(count.get(), anotherFigure);
         }
+    }
+
+    public void setFiguresActive(boolean isWhite) {
+        setAllFiguresInactive();
+        figuresInGame.values()
+                .stream()
+                .filter(i-> i.isWhite() == isWhite)
+                .forEach(i-> i.setActive(true));
+    }
+
+    private void setAllFiguresInactive() {
+        figuresInGame.values().forEach(i-> i.setActive(false));
     }
 }

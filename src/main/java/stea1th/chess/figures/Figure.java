@@ -12,6 +12,10 @@ public interface Figure {
 
     String getView();
 
+    boolean isActive();
+
+    void setActive(boolean active);
+
     void register();
 
     void setPosition(Integer position);
