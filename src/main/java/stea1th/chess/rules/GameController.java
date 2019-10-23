@@ -61,7 +61,7 @@ public class GameController {
         if (anotherFigure != null && anotherFigure.isWhite() != figure.isWhite()) {
             figuresInGame.remove(newPosition);
             anotherFigure.setAlive(false);
-            figuresInGame.put(count.get(), anotherFigure);
+            figuresInGame.put(count.incrementAndGet(), anotherFigure);
         }
     }
 
@@ -69,8 +69,9 @@ public class GameController {
         setAllFiguresInactive();
         figuresInGame.values()
                 .stream()
-                .filter(i-> i.isWhite() == isWhite)
+                .filter(i-> i.isWhite() == isWhite && i.isAlive())
                 .forEach(i-> i.setActive(true));
+//        figuresInGame.values().forEach(i-> System.out.println(i.getName() +" -> " +i.isAlive()));
     }
 
     private void setAllFiguresInactive() {

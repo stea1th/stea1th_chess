@@ -16,8 +16,6 @@ public class ConsoleHelper {
 
     private static final Scanner SCANNER = new Scanner(System.in);
     private final static int BOARD_SIZE = 8;
-    private static StringBuilder wDead = new StringBuilder();
-    private static StringBuilder bDead = new StringBuilder();
     private static final String THREE_SPACES = "   ";
     private static final String TWO_SPACES = "  ";
     private static final String ONE_SPACE = " ";
@@ -106,6 +104,8 @@ public class ConsoleHelper {
     }
 
     private static String[] getAllDeadPieces(Map<Integer, Figure> figures) {
+        StringBuilder wDead = new StringBuilder();
+        StringBuilder bDead = new StringBuilder();
         for (Figure figure : figures.values()) {
             if (!figure.isAlive()) {
                 if (figure.isWhite())
