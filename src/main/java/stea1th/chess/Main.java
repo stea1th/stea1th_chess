@@ -4,12 +4,14 @@ import stea1th.chess.figures.AbstractFigure;
 import stea1th.chess.figures.FigureFactory;
 import stea1th.chess.helpers.ConsoleHelper;
 
+import java.util.Map;
+
 public class Main {
 
     public static void main(String[] args) {
-        ConsoleHelper.createPlayers().forEach((k, v)-> System.out.println(k + " -> " +v));
-//        ChessBoard board = new ChessBoard();
-//        board.play();
+        Map<Boolean, String> players =  ConsoleHelper.createPlayers();
+        ChessBoard board = new ChessBoard();
+        board.play(players);
 //        ConsoleHelper.printForWhiteNumbers();
 //        FigureFactory.test();
 //        AbstractFigure.test();

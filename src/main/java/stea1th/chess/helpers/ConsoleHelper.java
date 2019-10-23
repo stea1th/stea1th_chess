@@ -23,9 +23,9 @@ public class ConsoleHelper {
     private static final String ONE_SPACE = " ";
 
 
-    public static String readFromConsole() {
-        System.out.print("your move: ");
-        return SCANNER.nextLine();
+    public static String readFromConsole(String name) {
+        System.out.print(name + " your move: ");
+        return SCANNER.next();
     }
 
     public static Integer[] parsePositions(String position) {
@@ -154,13 +154,13 @@ public class ConsoleHelper {
         System.out.println("---------------------------------");
     }
 
-    public static Map<String, String> createPlayers() {
-        Map<String, String> players = new HashMap<>();
+    public static Map<Boolean, String> createPlayers() {
+        Map<Boolean, String> players = new HashMap<>();
         while (players.size() < 2) {
             String name = createName();
-            String color = chooseColor(players);
-            System.out.println("Your color: " + color);
-            players.put(color, name);
+            Boolean isWhite = chooseColor(players);
+            System.out.println("Your color: " + (isWhite? "white" : "black"));
+            players.put(isWhite, name);
         }
         return players;
     }
@@ -170,26 +170,26 @@ public class ConsoleHelper {
         return SCANNER.next();
     }
 
-    private static String chooseColor(Map<String, String> players) {
+    private static boolean chooseColor(Map<Boolean, String> players) {
         String userChoice;
-        String color;
+        boolean isWhite;
         if (players.size() != 0) {
-            color = players.get("white") != null ? "black" : "white";
+            isWhite = players.get(true) == null;
         } else {
             System.out.print("Choose your color: w/b?");
             userChoice = SCANNER.next().toLowerCase();
             switch (userChoice) {
                 case "w":
-                    color = "white";
+                    isWhite = true;
                     break;
                 case "b":
-                    color = "black";
+                    isWhite = false;
                     break;
                 default:
-                    color = chooseColor(players);
+                    isWhite = chooseColor(players);
                     break;
             }
         }
-        return color;
+        return isWhite;
     }
 }
