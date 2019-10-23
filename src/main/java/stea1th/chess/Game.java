@@ -9,9 +9,10 @@ public class Game {
 
     public void play() {
         GameController controller = new GameController();
+        boolean isWhite = true;
         while (true) {
-            printBoard(controller.getFiguresInGame());
-            controller.moveFigure(parsePositions(TurnConverter.convert(readFromConsole())));
+            printBoard(controller.getFiguresInGame(), isWhite);
+            isWhite = controller.moveFigure(parsePositions(TurnConverter.convert(readFromConsole()))) != isWhite;
         }
     }
 }
