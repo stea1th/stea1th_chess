@@ -12,8 +12,6 @@ public class Game {
         while (true) {
             printBoard(controller.getFiguresInGame());
             controller.moveFigure(parsePositions(TurnConverter.convert(readFromConsole())));
-//            controller.moveFigure(parsePositions(message));
         }
     }
-
 }

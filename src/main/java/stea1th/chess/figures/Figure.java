@@ -26,5 +26,7 @@ public interface Figure {
 
     void setAlive(boolean alive);
 
+    int getMovesCount();
+
 
 }

@@ -25,6 +25,9 @@ public class PawnRule extends AbstractRule {
         Direction dir = figure.isWhite() ? NORTH : SOUTH;
         addToDirections(dir);
         oneCellTurn(figure.getPosition());
+        if (figure.getMovesCount() == 0) {
+            oneCellTurn(getFirstPossibleMove(), false);
+        }
         pawnMovesIfEnemyNearby(figure);
     }
 

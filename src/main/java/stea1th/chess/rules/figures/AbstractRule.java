@@ -55,6 +55,10 @@ public abstract class AbstractRule implements Rule {
             allPossibleMoves.put("" + position, position);
     }
 
+    Integer getFirstPossibleMove() {
+        return allPossibleMoves.values().stream().findFirst().orElse(null);
+    }
+
     void addToDirections(Direction dir) {
         directions.add(dir);
     }
@@ -80,11 +84,17 @@ public abstract class AbstractRule implements Rule {
     }
 
     void oneCellTurn(Integer position) {
-        clear();
-        getDirections().forEach(i -> {
-            Integer tempPosition = getAdjoiningPosition(position, i);
-            addToPossibleMoves(isPieceOnTheWay(tempPosition) && (isSameColor(tempPosition) || mainFigure.getNotation().equals("p")) ? null : tempPosition);
-        });
+        oneCellTurn(position, true);
+    }
+
+    void oneCellTurn(Integer position, boolean clearThis) {
+        if (clearThis) clear();
+        if (position != null) {
+            getDirections().forEach(i -> {
+                Integer tempPosition = getAdjoiningPosition(position, i);
+                addToPossibleMoves(isPieceOnTheWay(tempPosition) && (isSameColor(tempPosition) || mainFigure.getNotation().equals("p")) ? null : tempPosition);
+            });
+        }
     }
 
     boolean isEnemyNearby(Integer position) {

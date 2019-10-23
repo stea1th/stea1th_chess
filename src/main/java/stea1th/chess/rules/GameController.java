@@ -40,7 +40,7 @@ public class GameController {
     }
 
     public boolean moveFigure(Integer[] positions) {
-        if(positions == null) return false;
+        if (positions == null) return false;
         Integer fromPosition = positions[0];
         Figure figure = figuresInGame.get(fromPosition);
         if (figure != null) {

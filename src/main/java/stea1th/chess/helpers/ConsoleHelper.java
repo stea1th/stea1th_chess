@@ -14,9 +14,11 @@ public class ConsoleHelper {
     }
 
     private static final Scanner SCANNER = new Scanner(System.in);
+    private static StringBuilder wDead = new StringBuilder();
+    private static StringBuilder bDead = new StringBuilder();
 
     public static String readFromConsole() {
-        System.out.println("your move: ");
+        System.out.print("your move: ");
         return SCANNER.nextLine();
     }
 
@@ -81,8 +83,7 @@ public class ConsoleHelper {
     }
 
     private static String[] getAllDeadPieces(Map<Integer, Figure> figures) {
-        StringBuilder wDead = new StringBuilder();
-        StringBuilder bDead = new StringBuilder();
+
 
         for (Figure figure : figures.values()) {
             if (!figure.isAlive()) {

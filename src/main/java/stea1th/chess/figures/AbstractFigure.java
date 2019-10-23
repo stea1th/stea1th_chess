@@ -63,8 +63,10 @@ public abstract class AbstractFigure implements Figure {
 
     public boolean move(int position) {
         boolean isValid = isTurnValid(position);
-        if (isValid)
+        if (isValid) {
             this.setPosition(position);
+            movesCount++;
+        }
         return isValid;
     }
 
