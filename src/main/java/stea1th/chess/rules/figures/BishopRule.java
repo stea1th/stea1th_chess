@@ -21,8 +21,13 @@ public class BishopRule extends AbstractRule {
     }
 
     @Override
-    public void allPossibleMoves(Figure figure) {
-        allCellsTurn(figure.getPosition());
+    public void findAllPossibleMoves(Figure figure) {
+        moreCellsTurn(figure.getPosition());
+    }
+
+    @Override
+    public boolean scanForPosition(int enemyKingPosition) {
+        return scanMoreCellsTurn(enemyKingPosition);
     }
 
 }

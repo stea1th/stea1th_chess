@@ -11,4 +11,6 @@ public interface Rule {
     void setFiguresInGame(Map<Integer, Figure> figuresInGame);
 
     void setMainFigure(Figure mainFigure);
+
+    boolean scanForPosition(int enemyKingPosition);
 }

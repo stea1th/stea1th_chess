@@ -49,11 +49,12 @@ public class GameController {
         if (isAccepted) {
             figure.setFiguresInGame(figuresInGame);
             figuresInGame.remove(fromPosition);
-            if (figure.move(positions[1])) {
+            isAccepted = figure.move(positions[1]);
+            if (isAccepted) {
                 killEnemy(figure);
             }
-            isEnemyKingAttacked(figure.isWhite());
             figuresInGame.put(figure.getPosition(), figure);
+            isEnemyKingAttacked(figure.isWhite());
         }
         return isAccepted;
     }
@@ -83,9 +84,7 @@ public class GameController {
     private void isEnemyKingAttacked(boolean isWhite) {
         List<Figure> figures = new ArrayList<>(figuresInGame.values());
         int kingPosition = figures.stream().filter(i-> i instanceof King && i.isWhite() != isWhite).findFirst().get().getPosition();
-        for(Figure figure : figures) {
-
-        }
-
+        figures.forEach(i-> i.setFiguresInGame(figuresInGame));
+        figures.stream().filter(i-> i.isActive() && i.getRule().scanForPosition(kingPosition)).forEach(i-> System.out.println(i.getName() + " -> " + i.getPosition()));
     }
 }

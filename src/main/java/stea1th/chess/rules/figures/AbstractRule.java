@@ -32,7 +32,7 @@ public abstract class AbstractRule implements Rule {
     private Map<Integer, Figure> figuresInGame = new HashMap<>();
 
     public Map<String, Integer> getAllPossibleMoves(Figure figure) {
-        allPossibleMoves(figure);
+        findAllPossibleMoves(figure);
         return allPossibleMoves;
     }
 
@@ -48,7 +48,7 @@ public abstract class AbstractRule implements Rule {
         return (T) Class.forName(clazzName != null ? clazzName : REGISTERED_RULES.get(" ")).newInstance();
     }
 
-    public abstract void allPossibleMoves(Figure figure);
+    public abstract void findAllPossibleMoves(Figure figure);
 
     void addToPossibleMoves(Integer position) {
         if (position != null)
@@ -102,7 +102,7 @@ public abstract class AbstractRule implements Rule {
         return (figure != null && !figure.isWhite() == mainFigure.isWhite());
     }
 
-    void allCellsTurn(Integer position) {
+    void moreCellsTurn(Integer position) {
         clear();
         getDirections().forEach(i -> {
             Integer tempPosition = position;
@@ -120,6 +120,20 @@ public abstract class AbstractRule implements Rule {
     static Integer getAdjoiningPosition(int position, Direction direction) {
         int result = position + direction.value;
         return isInBorders(result) ? result : null;
+    }
+
+    public abstract boolean scanForPosition(int enemyKingPosition);
+
+    boolean scanOneCellTurn(int anotherPosition) {
+        oneCellTurn(mainFigure.getPosition());
+        return allPossibleMoves.get("" + anotherPosition) != null;
+    }
+
+    boolean scanMoreCellsTurn(int anotherPosition) {
+        moreCellsTurn(mainFigure.getPosition());
+//        System.out.println("size ->" + allPossibleMoves.size());
+//        System.out.println(this.getMainFigure().getName() + " anotherPosition -> " + allPossibleMoves.get("" + anotherPosition));
+        return allPossibleMoves.get("" + anotherPosition) != null;
     }
 
 

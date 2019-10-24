@@ -21,7 +21,12 @@ public class KnightRule extends AbstractRule {
     }
 
     @Override
-    public void allPossibleMoves(Figure figure) {
+    public void findAllPossibleMoves(Figure figure) {
         oneCellTurn(figure.getPosition());
+    }
+
+    @Override
+    public boolean scanForPosition(int enemyKingPosition) {
+        return scanOneCellTurn(enemyKingPosition);
     }
 }

@@ -21,7 +21,7 @@ public class PawnRule extends AbstractRule {
     }
 
     @Override
-    public void allPossibleMoves(Figure figure) {
+    public void findAllPossibleMoves(Figure figure) {
         Direction dir = figure.isWhite() ? NORTH : SOUTH;
         addToDirections(dir);
         oneCellTurn(figure.getPosition());
@@ -29,6 +29,11 @@ public class PawnRule extends AbstractRule {
             oneCellTurn(getFirstPossibleMove(), false);
         }
         pawnMovesIfEnemyNearby(figure);
+    }
+
+    @Override
+    public boolean scanForPosition(int enemyKingPosition) {
+        return scanOneCellTurn(enemyKingPosition);
     }
 
     private void pawnMovesIfEnemyNearby(Figure figure) {
