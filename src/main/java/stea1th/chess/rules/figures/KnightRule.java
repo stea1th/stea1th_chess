@@ -20,8 +20,8 @@ public class KnightRule extends AbstractRule {
         addToRegisteredRules("N", this.getClass().getName());
     }
 
-    @Override
-    public boolean scanForPosition(int enemyKingPosition) {
-        return false;
-    }
+//    @Override
+//    public boolean scanForPosition(int enemyKingPosition) {
+//        return false;
+//    }
 }

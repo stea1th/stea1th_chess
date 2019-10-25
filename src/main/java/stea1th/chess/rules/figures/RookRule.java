@@ -18,8 +18,8 @@ public class RookRule extends AbstractRule {
         addToRegisteredRules("R", this.getClass().getName());
     }
 
-    @Override
-    public boolean scanForPosition(int enemyKingPosition) {
-        return false;
-    }
+//    @Override
+//    public boolean scanForPosition(int enemyKingPosition) {
+//        return false;
+//    }
 }

@@ -1,6 +1,5 @@
 package stea1th.chess.rules.figures;
 
-import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
 import lombok.*;
 import stea1th.chess.figures.Figure;
 import stea1th.chess.rules.enums.Direction;
@@ -14,6 +13,7 @@ import static stea1th.chess.rules.enums.Direction.MIN;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
+@EqualsAndHashCode(exclude = "mainFigure")
 public abstract class AbstractRule implements Rule {
 
     @Setter
@@ -81,9 +81,9 @@ public abstract class AbstractRule implements Rule {
 //        return oneCellTurn(position, direction, mainFigure.getNotation().equals("p"));
 //    }
 
-    private List<Move> oneCellTurn(Integer position, Direction direction, boolean isPawn) {
+    private List<Move> oneCellTurn(Integer position, Direction direction, boolean isPawnOff) {
         Integer tempPosition = getAdjoiningPosition(position, direction);
-        return tempPosition == null || (isPieceOnTheWay(tempPosition) && (isSameColor(tempPosition) || isPawn)) ? Collections.emptyList() : Collections.singletonList(new Move(tempPosition, position, direction));
+        return tempPosition == null || (isPieceOnTheWay(tempPosition) && (isSameColor(tempPosition) || !isPawnOff)) ? Collections.emptyList() : Collections.singletonList(new Move(tempPosition, position, direction));
     }
 
     private List<Move> moreCellsTurn(Integer position, Direction direction) {
@@ -108,7 +108,7 @@ public abstract class AbstractRule implements Rule {
         return isInBorders(result) ? result : null;
     }
 
-    public abstract boolean scanForPosition(int enemyKingPosition);
+//    public abstract boolean scanForPosition(int enemyKingPosition);
 
 //    boolean scanOneCellTurn(int anotherPosition) {
 //        oneCellTurn(mainFigure.getPosition());
@@ -128,6 +128,10 @@ public abstract class AbstractRule implements Rule {
         return findPossibleMoves(mainFigure.getPosition());
     }
 
+    List<Move> findPossibleMoves(boolean pawnOff, Integer position) {
+        return getMovesForDirections(position, pawnOff);
+    }
+
     List<Move> findPossibleMoves(Integer position) {
         return findPossibleMoves(position, true);
     }
@@ -137,19 +141,19 @@ public abstract class AbstractRule implements Rule {
         return getMovesForDirections(position);
     }
 
-    private List<Move> getMovesForDirections(Integer position, boolean isPawn) {
-        return getMovesForDirections(position, directions, isPawn);
+    private List<Move> getMovesForDirections(Integer position, boolean pawnOff) {
+        return getMovesForDirections(position, directions, pawnOff);
     }
 
     private List<Move> getMovesForDirections(Integer position) {
         return getMovesForDirections(position, directions, true);
     }
 
-    List<Move> getMovesForDirections(Integer position, Set<Direction> myDirections, boolean pawnOn) {
+    List<Move> getMovesForDirections(Integer position, Set<Direction> myDirections, boolean pawnOff) {
         List<Move> possibleMoves = new ArrayList<>();
         if (position != null) {
             myDirections.forEach(direction -> {
-                possibleMoves.addAll(mainFigure.isOneTurn() ? oneCellTurn(position, direction, pawnOn) : moreCellsTurn(position, direction));
+                possibleMoves.addAll(mainFigure.isOneTurn() ? oneCellTurn(position, direction, pawnOff) : moreCellsTurn(position, direction));
             });
         }
         return possibleMoves;

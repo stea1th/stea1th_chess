@@ -28,7 +28,7 @@ public class PawnRule extends AbstractRule {
     @Override
     public List<Move> findAllPossibleMoves() {
         addToDirections(mainFigure.isWhite() ? NORTH : SOUTH);
-        List<Move> moves = new ArrayList<>(findPossibleMoves(mainFigure.getPosition()));
+        List<Move> moves = new ArrayList<>(findPossibleMoves(false, mainFigure.getPosition()));
         if (mainFigure.getMovesCount() == 0 && !moves.isEmpty()) {
             moves.addAll(findPossibleMoves(moves.get(0).getNewPosition(), false));
         }
@@ -36,15 +36,15 @@ public class PawnRule extends AbstractRule {
         return moves;
     }
 
-    @Override
-    public boolean scanForPosition(int enemyKingPosition) {
-//        return scanOneCellTurn(enemyKingPosition);
-        return false;
-    }
+//    @Override
+//    public boolean scanForPosition(int enemyKingPosition) {
+////        return scanOneCellTurn(enemyKingPosition);
+//        return false;
+//    }
 
     private List<Move> pawnMovesIfEnemyNearby() {
         Direction[] dirs = mainFigure.isWhite() ? new Direction[]{NORTH_EAST, NORTH_WEST} : new Direction[]{SOUTH_EAST, SOUTH_WEST};
-        return getMovesForDirections(mainFigure.getPosition(), new HashSet<>(Arrays.asList(dirs)), false)
+        return getMovesForDirections(mainFigure.getPosition(), new HashSet<>(Arrays.asList(dirs)), true)
                 .stream()
                 .filter(i-> isEnemyNearby(i.getNewPosition()))
                 .collect(Collectors.toList());

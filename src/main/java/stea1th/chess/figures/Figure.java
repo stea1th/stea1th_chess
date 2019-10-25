@@ -24,7 +24,7 @@ public interface Figure {
 
     void setPosition(Integer position);
 
-    boolean move(int newPosition);
+//    boolean move(int newPosition);
 
     void setFiguresInGame(Map<Integer, Figure> figuresInGame);
 

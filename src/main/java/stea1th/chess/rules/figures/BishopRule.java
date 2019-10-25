@@ -19,9 +19,9 @@ public class BishopRule extends AbstractRule {
         addToRegisteredRules("B", this.getClass().getName());
     }
 
-    @Override
-    public boolean scanForPosition(int enemyKingPosition) {
-        return false;
-    }
+//    @Override
+//    public boolean scanForPosition(int enemyKingPosition) {
+//        return false;
+//    }
 
 }

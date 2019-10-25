@@ -13,6 +13,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = "rule")
 public abstract class AbstractFigure implements Figure {
 
     @Getter
@@ -65,22 +66,22 @@ public abstract class AbstractFigure implements Figure {
         return REGISTERED_FIGURES.keySet();
     }
 
-    public boolean move(int position) {
-        boolean isValid = isTurnValid(position);
-        if (isValid) {
-            this.setPosition(position);
-            movesCount++;
-        }
-        return isValid;
-    }
+//    public boolean move(int position) {
+//        boolean isValid = isTurnValid(position);
+//        if (isValid) {
+//            this.setPosition(position);
+//            movesCount++;
+//        }
+//        return isValid;
+//    }
 
     private void addToRegisteredFigures(String key, String value) {
         REGISTERED_FIGURES.put(key, value);
     }
 
-    private boolean isTurnValid(int newPosition) {
-        return rule.getAllPossibleMoves().get(String.valueOf(newPosition)) != null;
-    }
+//    private boolean isTurnValid(int newPosition) {
+//        return rule.getAllPossibleMoves().get(String.valueOf(newPosition)) != null;
+//    }
 
     private Rule loadRule() {
         return FigureRuleFactory.createRule(this);
