@@ -19,12 +19,7 @@ public class RookRule extends AbstractRule {
     }
 
     @Override
-    public void findAllPossibleMoves(Figure figure) {
-        moreCellsTurn(figure.getPosition());
-    }
-
-    @Override
     public boolean scanForPosition(int enemyKingPosition) {
-        return scanMoreCellsTurn(enemyKingPosition);
+        return false;
     }
 }

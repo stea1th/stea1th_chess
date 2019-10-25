@@ -1,10 +1,7 @@
 package stea1th.chess.figures;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import stea1th.chess.rules.figures.FigureRuleFactory;
 import stea1th.chess.rules.figures.Rule;
 
@@ -28,6 +25,10 @@ public abstract class AbstractFigure implements Figure {
     private boolean active;
     private int movesCount;
     private Rule rule;
+    @Getter
+    @Setter
+    private boolean kingChecked = false;
+    private boolean oneTurn;
 
     AbstractFigure(String notation, String name) {
         this.notation = notation;
@@ -35,7 +36,7 @@ public abstract class AbstractFigure implements Figure {
         this.name = name;
     }
 
-    AbstractFigure(String notation, String name, Integer position, boolean white) {
+    AbstractFigure(String notation, String name, Integer position, boolean white, boolean oneTurn) {
         this.notation = notation;
         this.view = (white ? "w" : "b") + notation;
         this.name = name;
@@ -44,6 +45,7 @@ public abstract class AbstractFigure implements Figure {
         this.alive = true;
         this.active = false;
         this.movesCount = 0;
+        this.oneTurn = oneTurn;
         this.rule = loadRule();
     }
 
@@ -77,7 +79,7 @@ public abstract class AbstractFigure implements Figure {
     }
 
     private boolean isTurnValid(int newPosition) {
-        return rule.getAllPossibleMoves(this).get(String.valueOf(newPosition)) != null;
+        return rule.getAllPossibleMoves().get(String.valueOf(newPosition)) != null;
     }
 
     private Rule loadRule() {

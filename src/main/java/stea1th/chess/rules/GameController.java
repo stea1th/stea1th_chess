@@ -50,22 +50,22 @@ public class GameController {
             figure.setFiguresInGame(figuresInGame);
             figuresInGame.remove(fromPosition);
             isAccepted = figure.move(positions[1]);
-            if (isAccepted) {
-                killEnemy(figure);
-            }
+            killEnemy(figure, isAccepted);
             figuresInGame.put(figure.getPosition(), figure);
             isEnemyKingAttacked(figure.isWhite());
         }
         return isAccepted;
     }
 
-    private void killEnemy(Figure figure) {
-        int newPosition = figure.getPosition();
-        Figure anotherFigure = figuresInGame.get(newPosition);
-        if (anotherFigure != null && anotherFigure.isWhite() != figure.isWhite()) {
-            figuresInGame.remove(newPosition);
-            anotherFigure.setAlive(false);
-            figuresInGame.put(count.incrementAndGet(), anotherFigure);
+    private void killEnemy(Figure figure, boolean isAccepted) {
+        if(isAccepted) {
+            int newPosition = figure.getPosition();
+            Figure anotherFigure = figuresInGame.get(newPosition);
+            if (anotherFigure != null && anotherFigure.isWhite() != figure.isWhite()) {
+                figuresInGame.remove(newPosition);
+                anotherFigure.setAlive(false);
+                figuresInGame.put(count.incrementAndGet(), anotherFigure);
+            }
         }
     }
 
@@ -81,9 +81,16 @@ public class GameController {
         figuresInGame.values().forEach(i-> i.setActive(false));
     }
 
+    public void setFiguresActiveToProtect(boolean isWhite) {
+        setAllFiguresInactive();
+
+
+    }
+
     private void isEnemyKingAttacked(boolean isWhite) {
         List<Figure> figures = new ArrayList<>(figuresInGame.values());
-        int kingPosition = figures.stream().filter(i-> i instanceof King && i.isWhite() != isWhite).findFirst().get().getPosition();
+        Figure enemyKing =  figures.stream().filter(i-> i instanceof King && i.isWhite() != isWhite).findFirst().get();
+        int kingPosition = enemyKing.getPosition();
         figures.forEach(i-> i.setFiguresInGame(figuresInGame));
         figures.stream().filter(i-> i.isActive() && i.getRule().scanForPosition(kingPosition)).forEach(i-> System.out.println(i.getName() + " -> " + i.getPosition()));
     }

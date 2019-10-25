@@ -1,12 +1,13 @@
 package stea1th.chess.rules.figures;
 
 import stea1th.chess.figures.Figure;
+import stea1th.chess.to.Move;
 
 import java.util.Map;
 
 public interface Rule {
 
-    Map<String, Integer> getAllPossibleMoves(Figure figure);
+    Map<String, Move> getAllPossibleMoves();
 
     void setFiguresInGame(Map<Integer, Figure> figuresInGame);
 

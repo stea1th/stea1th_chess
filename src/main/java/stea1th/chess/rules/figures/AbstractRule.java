@@ -3,11 +3,9 @@ package stea1th.chess.rules.figures;
 import lombok.*;
 import stea1th.chess.figures.Figure;
 import stea1th.chess.rules.enums.Direction;
+import stea1th.chess.to.Move;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static stea1th.chess.rules.enums.Direction.MAX;
 import static stea1th.chess.rules.enums.Direction.MIN;
@@ -18,12 +16,13 @@ import static stea1th.chess.rules.enums.Direction.MIN;
 public abstract class AbstractRule implements Rule {
 
     @Setter
-    private Figure mainFigure;
+    @Getter
+    Figure mainFigure;
 
     private final static Map<String, String> REGISTERED_RULES = new HashMap<>();
 
     @Getter
-    private final Map<String, Integer> allPossibleMoves = new HashMap<>();
+    private final Map<String, Move> allPossibleMoves = new HashMap<>();
 
     @Getter
     private final Set<Direction> directions;
@@ -31,8 +30,8 @@ public abstract class AbstractRule implements Rule {
     @Setter
     private Map<Integer, Figure> figuresInGame = new HashMap<>();
 
-    public Map<String, Integer> getAllPossibleMoves(Figure figure) {
-        findAllPossibleMoves(figure);
+    public Map<String, Move> getAllPossibleMoves() {
+        addListToPossibleMoves(findAllPossibleMoves());
         return allPossibleMoves;
     }
 
@@ -48,23 +47,17 @@ public abstract class AbstractRule implements Rule {
         return (T) Class.forName(clazzName != null ? clazzName : REGISTERED_RULES.get(" ")).newInstance();
     }
 
-    public abstract void findAllPossibleMoves(Figure figure);
+//    void addToPossibleMoves(Integer newPosition, Integer oldPosition, Direction direction) {
+//        if (newPosition != null)
+//            allPossibleMoves.put("" + newPosition, new Move(newPosition, oldPosition, direction));
+//    }
 
-    void addToPossibleMoves(Integer position) {
-        if (position != null)
-            allPossibleMoves.put("" + position, position);
-    }
-
-    Integer getFirstPossibleMove() {
+    Move getFirstPossibleMove() {
         return allPossibleMoves.values().stream().findFirst().orElse(null);
     }
 
     void addToDirections(Direction dir) {
         directions.add(dir);
-    }
-
-    void addToDirections(Direction[] dirs) {
-        directions.addAll(Arrays.asList(dirs));
     }
 
     private static boolean isInBorders(Integer position) {
@@ -79,62 +72,87 @@ public abstract class AbstractRule implements Rule {
         return figuresInGame.get(position).isWhite() == mainFigure.isWhite();
     }
 
-    private void clear() {
-        allPossibleMoves.clear();
-    }
-
-    void oneCellTurn(Integer position) {
-        oneCellTurn(position, true);
-    }
-
-    void oneCellTurn(Integer position, boolean clearThis) {
-        if (clearThis) clear();
-        if (position != null) {
-            getDirections().forEach(i -> {
-                Integer tempPosition = getAdjoiningPosition(position, i);
-                addToPossibleMoves(isPieceOnTheWay(tempPosition) && (isSameColor(tempPosition) || mainFigure.getNotation().equals("p")) ? null : tempPosition);
-            });
-        }
-    }
-
     boolean isEnemyNearby(Integer position) {
         Figure figure = figuresInGame.get(position);
         return (figure != null && !figure.isWhite() == mainFigure.isWhite());
     }
 
-    void moreCellsTurn(Integer position) {
-        clear();
-        getDirections().forEach(i -> {
-            Integer tempPosition = position;
-            while (isInBorders(tempPosition)) {
-                tempPosition = getAdjoiningPosition(tempPosition, i);
-                if (isPieceOnTheWay(tempPosition)) {
-                    addToPossibleMoves(isSameColor(tempPosition) ? null : tempPosition);
-                    break;
-                }
-                addToPossibleMoves(tempPosition);
-            }
-        });
+    private void clear(boolean clearThis) {
+        if (clearThis)
+            allPossibleMoves.clear();
     }
 
-    static Integer getAdjoiningPosition(int position, Direction direction) {
+    private void clear() {
+        clear(true);
+    }
+
+    private List<Move> oneCellTurn(Integer position, Direction direction) {
+        Integer tempPosition = getAdjoiningPosition(position, direction);
+        return tempPosition == null || (isPieceOnTheWay(tempPosition) && (isSameColor(tempPosition) || mainFigure.getNotation().equals("p"))) ? Collections.emptyList() : Collections.singletonList(new Move(tempPosition, position, direction));
+    }
+
+    private List<Move> moreCellsTurn(Integer position, Direction direction) {
+        List<Move> moves = new ArrayList<>();
+        Integer tempPosition = position;
+        while (isInBorders(tempPosition)) {
+            tempPosition = getAdjoiningPosition(tempPosition, direction);
+            if(tempPosition == null) return moves;
+            if (isPieceOnTheWay(tempPosition)) {
+                if (!isSameColor(tempPosition)) {
+                    moves.add(new Move(tempPosition, position, direction));
+                }
+                return moves;
+            }
+            moves.add(new Move(tempPosition, position, direction));
+        }
+        return moves;
+    }
+
+    private static Integer getAdjoiningPosition(int position, Direction direction) {
         int result = position + direction.value;
         return isInBorders(result) ? result : null;
     }
 
     public abstract boolean scanForPosition(int enemyKingPosition);
 
-    boolean scanOneCellTurn(int anotherPosition) {
-        oneCellTurn(mainFigure.getPosition());
-        return allPossibleMoves.get("" + anotherPosition) != null;
+//    boolean scanOneCellTurn(int anotherPosition) {
+//        oneCellTurn(mainFigure.getPosition());
+//        return allPossibleMoves.get("" + anotherPosition) != null;
+//    }
+//
+//    boolean scanMoreCellsTurn(int anotherPosition) {
+//        moreCellsTurn(mainFigure.getPosition());
+//        return allPossibleMoves.get("" + anotherPosition) != null;
+//    }
+
+    private void addListToPossibleMoves(List<Move> moves) {
+        moves.forEach(i -> allPossibleMoves.put(String.valueOf(i.getNewPosition()), i));
     }
 
-    boolean scanMoreCellsTurn(int anotherPosition) {
-        moreCellsTurn(mainFigure.getPosition());
-//        System.out.println("size ->" + allPossibleMoves.size());
-//        System.out.println(this.getMainFigure().getName() + " anotherPosition -> " + allPossibleMoves.get("" + anotherPosition));
-        return allPossibleMoves.get("" + anotherPosition) != null;
+    public List<Move> findAllPossibleMoves() {
+        return findPossibleMoves(mainFigure.getPosition());
     }
 
+    List<Move> findPossibleMoves(Integer position) {
+        return findPossibleMoves(position, true);
+    }
 
+    List<Move> findPossibleMoves(Integer position, boolean clearThis) {
+        clear(clearThis);
+        return getMovesForDirections(position);
+    }
+
+    private List<Move> getMovesForDirections(Integer position) {
+        return getMovesForDirections(position, directions);
+    }
+
+    List<Move> getMovesForDirections(Integer position, Set<Direction> myDirections) {
+        List<Move> possibleMoves = new ArrayList<>();
+        if (position != null) {
+            myDirections.forEach(direction -> {
+                possibleMoves.addAll(mainFigure.isOneTurn() ? oneCellTurn(position, direction) : moreCellsTurn(position, direction));
+            });
+        }
+        return possibleMoves;
+    }
 }

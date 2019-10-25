@@ -34,7 +34,13 @@ public interface Figure {
 
     void setAlive(boolean alive);
 
+    boolean isOneTurn();
+
     int getMovesCount();
+
+    void setKingChecked(boolean checked);
+
+    boolean isKingChecked();
 
 
 }
