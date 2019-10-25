@@ -25,7 +25,7 @@ public class GameController {
     }
 
     private void init() {
-        Config config = ConfigFactory.parseResources("default.conf");
+        Config config = ConfigFactory.parseResources("default_test.conf");
         String[] configParams = new String[]{".white.positions", ".black.positions"};
         for (String param : configParams) {
             FigureFactory.getFigureNames().forEach(i -> {

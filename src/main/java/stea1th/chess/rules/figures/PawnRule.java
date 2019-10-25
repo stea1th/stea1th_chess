@@ -44,7 +44,7 @@ public class PawnRule extends AbstractRule {
 
     private List<Move> pawnMovesIfEnemyNearby() {
         Direction[] dirs = mainFigure.isWhite() ? new Direction[]{NORTH_EAST, NORTH_WEST} : new Direction[]{SOUTH_EAST, SOUTH_WEST};
-        return getMovesForDirections(mainFigure.getPosition(), new HashSet<>(Arrays.asList(dirs)))
+        return getMovesForDirections(mainFigure.getPosition(), new HashSet<>(Arrays.asList(dirs)), false)
                 .stream()
                 .filter(i-> isEnemyNearby(i.getNewPosition()))
                 .collect(Collectors.toList());

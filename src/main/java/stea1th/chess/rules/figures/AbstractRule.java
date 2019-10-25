@@ -1,5 +1,6 @@
 package stea1th.chess.rules.figures;
 
+import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
 import lombok.*;
 import stea1th.chess.figures.Figure;
 import stea1th.chess.rules.enums.Direction;
@@ -21,7 +22,6 @@ public abstract class AbstractRule implements Rule {
 
     private final static Map<String, String> REGISTERED_RULES = new HashMap<>();
 
-    @Getter
     private final Map<String, Move> allPossibleMoves = new HashMap<>();
 
     @Getter
@@ -45,15 +45,6 @@ public abstract class AbstractRule implements Rule {
     static <T extends AbstractRule> T newInstance(Figure figure) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         String clazzName = REGISTERED_RULES.get(figure.getNotation());
         return (T) Class.forName(clazzName != null ? clazzName : REGISTERED_RULES.get(" ")).newInstance();
-    }
-
-//    void addToPossibleMoves(Integer newPosition, Integer oldPosition, Direction direction) {
-//        if (newPosition != null)
-//            allPossibleMoves.put("" + newPosition, new Move(newPosition, oldPosition, direction));
-//    }
-
-    Move getFirstPossibleMove() {
-        return allPossibleMoves.values().stream().findFirst().orElse(null);
     }
 
     void addToDirections(Direction dir) {
@@ -86,9 +77,13 @@ public abstract class AbstractRule implements Rule {
         clear(true);
     }
 
-    private List<Move> oneCellTurn(Integer position, Direction direction) {
+//    private List<Move> oneCellTurn(Integer position, Direction direction) {
+//        return oneCellTurn(position, direction, mainFigure.getNotation().equals("p"));
+//    }
+
+    private List<Move> oneCellTurn(Integer position, Direction direction, boolean isPawn) {
         Integer tempPosition = getAdjoiningPosition(position, direction);
-        return tempPosition == null || (isPieceOnTheWay(tempPosition) && (isSameColor(tempPosition) || mainFigure.getNotation().equals("p"))) ? Collections.emptyList() : Collections.singletonList(new Move(tempPosition, position, direction));
+        return tempPosition == null || (isPieceOnTheWay(tempPosition) && (isSameColor(tempPosition) || isPawn)) ? Collections.emptyList() : Collections.singletonList(new Move(tempPosition, position, direction));
     }
 
     private List<Move> moreCellsTurn(Integer position, Direction direction) {
@@ -96,7 +91,7 @@ public abstract class AbstractRule implements Rule {
         Integer tempPosition = position;
         while (isInBorders(tempPosition)) {
             tempPosition = getAdjoiningPosition(tempPosition, direction);
-            if(tempPosition == null) return moves;
+            if (tempPosition == null) return moves;
             if (isPieceOnTheWay(tempPosition)) {
                 if (!isSameColor(tempPosition)) {
                     moves.add(new Move(tempPosition, position, direction));
@@ -142,15 +137,19 @@ public abstract class AbstractRule implements Rule {
         return getMovesForDirections(position);
     }
 
-    private List<Move> getMovesForDirections(Integer position) {
-        return getMovesForDirections(position, directions);
+    private List<Move> getMovesForDirections(Integer position, boolean isPawn) {
+        return getMovesForDirections(position, directions, isPawn);
     }
 
-    List<Move> getMovesForDirections(Integer position, Set<Direction> myDirections) {
+    private List<Move> getMovesForDirections(Integer position) {
+        return getMovesForDirections(position, directions, true);
+    }
+
+    List<Move> getMovesForDirections(Integer position, Set<Direction> myDirections, boolean pawnOn) {
         List<Move> possibleMoves = new ArrayList<>();
         if (position != null) {
             myDirections.forEach(direction -> {
-                possibleMoves.addAll(mainFigure.isOneTurn() ? oneCellTurn(position, direction) : moreCellsTurn(position, direction));
+                possibleMoves.addAll(mainFigure.isOneTurn() ? oneCellTurn(position, direction, pawnOn) : moreCellsTurn(position, direction));
             });
         }
         return possibleMoves;
