@@ -21,7 +21,7 @@ public abstract class AbstractRule implements Rule {
 
     private final static Map<String, String> REGISTERED_RULES = new HashMap<>();
 
-    private final Map<String, Move> allPossibleMoves = new HashMap<>();
+    private final Map<Integer, Move> allPossibleMoves = new HashMap<>();
 
     @Getter
     private final Set<Direction> directions;
@@ -29,7 +29,7 @@ public abstract class AbstractRule implements Rule {
     @Setter
     private Map<Integer, Figure> figuresInGame = new HashMap<>();
 
-    public Map<String, Move> getAllPossibleMoves() {
+    public Map<Integer, Move> getAllPossibleMoves() {
         addListToPossibleMoves(findAllPossibleMoves());
         return allPossibleMoves;
     }
@@ -59,9 +59,6 @@ public abstract class AbstractRule implements Rule {
     }
 
     private boolean isSameColor(Integer position) {
-        System.out.println(position);
-        Figure figure = figuresInGame.get(position);
-//        System.out.println(figure.g);
         return figuresInGame.get(position).isWhite() == mainFigure.isWhite();
     }
 
@@ -78,10 +75,6 @@ public abstract class AbstractRule implements Rule {
     private void clear() {
         clear(true);
     }
-
-//    private List<Move> oneCellTurn(Integer position, Direction direction) {
-//        return oneCellTurn(position, direction, mainFigure.getNotation().equals("p"));
-//    }
 
     private List<Move> oneCellTurn(Integer position, Direction direction) {
         Integer tempPosition = getAdjoiningPosition(position, direction);
@@ -112,29 +105,13 @@ public abstract class AbstractRule implements Rule {
         return isInBorders(result) ? result : null;
     }
 
-//    public abstract boolean scanForPosition(int enemyKingPosition);
-
-//    boolean scanOneCellTurn(int anotherPosition) {
-//        oneCellTurn(mainFigure.getPosition());
-//        return allPossibleMoves.get("" + anotherPosition) != null;
-//    }
-//
-//    boolean scanMoreCellsTurn(int anotherPosition) {
-//        moreCellsTurn(mainFigure.getPosition());
-//        return allPossibleMoves.get("" + anotherPosition) != null;
-//    }
-
     private void addListToPossibleMoves(List<Move> moves) {
-        moves.forEach(i -> allPossibleMoves.put(String.valueOf(i.getNewPosition()), i));
+        moves.forEach(i -> allPossibleMoves.put(i.getNewPosition(), i));
     }
 
     public List<Move> findAllPossibleMoves() {
         return findPossibleMoves(mainFigure.getPosition());
     }
-
-//    List<Move> findPossibleMoves(Integer position) {
-//        return getMovesForDirections(position);
-//    }
 
     List<Move> findPossibleMoves(Integer position) {
         return findPossibleMoves(position, true);

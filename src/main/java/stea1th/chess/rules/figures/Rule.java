@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface Rule {
 
-    Map<String, Move> getAllPossibleMoves();
+    Map<Integer, Move> getAllPossibleMoves();
 
     void setFiguresInGame(Map<Integer, Figure> figuresInGame);
 

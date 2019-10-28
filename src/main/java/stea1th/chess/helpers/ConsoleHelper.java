@@ -57,7 +57,7 @@ public class ConsoleHelper {
                 } else {
                     int num = column + BOARD_SIZE * row;
                     Figure figure = figures.get(num);
-                    String cell = figure != null && figure.isAlive() ? ONE_SPACE + figure.getView() : getEmptyCell(row, num);
+                    String cell = figure != null && figure.isAlive() ? ONE_SPACE + figure.getView() : getEmptyCell(row, num, true);
                     System.out.print("|" + cell);
                 }
             }
@@ -81,7 +81,7 @@ public class ConsoleHelper {
         return TWO_SPACES + builder.reverse().toString();
     }
 
-    public static void printForBlack(Map<Integer, Figure> figures) {
+    private static void printForBlack(Map<Integer, Figure> figures) {
         for (int row = BOARD_SIZE; row > 0; row--) {
             System.out.println();
             System.out.println(THREE_SPACES + "---------------------------------");
@@ -91,7 +91,7 @@ public class ConsoleHelper {
                 } else {
                     int num = BOARD_SIZE * row - column + 1;
                     Figure figure = figures.get(num);
-                    String cell = figure != null && figure.isAlive() ? ONE_SPACE + figure.getView() : getEmptyCell(row, num);
+                    String cell = figure != null && figure.isAlive() ? ONE_SPACE + figure.getView() : getEmptyCell(row, num, false);
                     System.out.print("|" + cell);
                 }
             }
@@ -117,13 +117,14 @@ public class ConsoleHelper {
         return new String[]{wDead.toString(), bDead.toString()};
     }
 
-    private static String getEmptyCell(int row, int num) {
+    private static String getEmptyCell(int row, int num, boolean isWhite) {
         String white = THREE_SPACES;
         String black = "===";
+        int expr = isWhite? 1 : 0;
         if (row % 2 == 0)
-            return num % 2 == 1 ? white : black;
+            return num % 2 == expr ? white : black;
         else
-            return num % 2 == 1 ? black : white;
+            return num % 2 == expr ? black : white;
     }
 
     public static void printForWhiteNumbers() {

@@ -22,8 +22,8 @@ public class Game {
             for (Map.Entry<Boolean, String> entry : players.entrySet()) {
                 if (isWhite.equals(entry.getKey())) {
                     printBoard(controller.getFIGURES_IN_GAME(), isWhite);
-                    controller.setFiguresActive(isWhite);
-                    isWhite = controller.moveFigure(parsePositions(TurnConverter.convert(readFromConsole(entry.getValue())))) != isWhite;
+//                    printBoard();
+                    isWhite = controller.moveFigure(parsePositions(TurnConverter.convert(readFromConsole(entry.getValue()))), isWhite) != isWhite;
                 }
             }
         }

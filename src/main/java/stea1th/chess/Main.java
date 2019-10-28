@@ -12,6 +12,9 @@ public class Main {
         Map<Boolean, String> players =  ConsoleHelper.createPlayers();
         ChessBoard board = new ChessBoard();
         board.play(players);
+
+//        ConsoleHelper.printForWhiteNumbers();
+//        ConsoleHelper.printForBlackNumbers();
 //        ConsoleHelper.printForWhiteNumbers();
 //        FigureFactory.test();
 //        AbstractFigure.test();
