@@ -90,4 +90,8 @@ public abstract class AbstractFigure implements Figure {
     public void setFiguresInGame(Map<Integer, Figure> figuresInGame) {
         rule.setFiguresInGame(figuresInGame);
     }
+
+    public void incrementMove() {
+        movesCount++;
+    }
 }

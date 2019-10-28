@@ -89,6 +89,7 @@ public class GameController {
     }
 
     private void moveIt(int from, int to, Figure figure) {
+        figure.incrementMove();
         FIGURES_IN_GAME.remove(from);
         figure.setPosition(to);
         FIGURES_IN_GAME.put(to, figure);

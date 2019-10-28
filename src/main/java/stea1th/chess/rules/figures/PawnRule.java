@@ -1,7 +1,6 @@
 package stea1th.chess.rules.figures;
 
 import lombok.ToString;
-import stea1th.chess.figures.Figure;
 import stea1th.chess.rules.enums.Direction;
 import stea1th.chess.to.Move;
 
@@ -28,7 +27,7 @@ public class PawnRule extends AbstractRule {
     @Override
     public List<Move> findAllPossibleMoves() {
         addToDirections(mainFigure.isWhite() ? NORTH : SOUTH);
-        List<Move> moves = new ArrayList<>(findPossibleMoves(false, mainFigure.getPosition()));
+        List<Move> moves = new ArrayList<>(findPossibleMoves(mainFigure.getPosition()));
         if (mainFigure.getMovesCount() == 0 && !moves.isEmpty()) {
             moves.addAll(findPossibleMoves(moves.get(0).getNewPosition(), false));
         }
@@ -44,9 +43,9 @@ public class PawnRule extends AbstractRule {
 
     private List<Move> pawnMovesIfEnemyNearby() {
         Direction[] dirs = mainFigure.isWhite() ? new Direction[]{NORTH_EAST, NORTH_WEST} : new Direction[]{SOUTH_EAST, SOUTH_WEST};
-        return getMovesForDirections(mainFigure.getPosition(), new HashSet<>(Arrays.asList(dirs)), true)
+        return getMovesForDirections(mainFigure.getPosition(), new HashSet<>(Arrays.asList(dirs)))
                 .stream()
-                .filter(i-> isEnemyNearby(i.getNewPosition()))
+                .filter(i -> isEnemyNearby(i.getNewPosition()))
                 .collect(Collectors.toList());
     }
 }

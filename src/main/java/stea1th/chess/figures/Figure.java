@@ -38,6 +38,8 @@ public interface Figure {
 
     int getMovesCount();
 
+    void incrementMove();
+
     void setKingChecked(boolean checked);
 
     boolean isKingChecked();
