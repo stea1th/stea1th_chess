@@ -102,14 +102,16 @@ public class GameController {
     }
 
     private Map<Boolean, Figure> getKings() {
-        Map<Boolean, Figure> kingsPositions = new HashMap<>();
-        getFiguresByName("King").forEach(i -> kingsPositions.put(i.isWhite(), i));
-        return kingsPositions;
+//        Map<Boolean, Figure> kingsPositions = new HashMap<>();
+//        getFiguresByName("King").forEach(i -> kingsPositions.put(i.isWhite(), i));
+//        return kingsPositions;
+        return getFiguresByName("King").stream().collect(Collectors.toMap(Figure::isWhite, i-> i));
     }
 
     private void setFiguresActive(boolean isWhite) {
         setAllFiguresInactive();
         Figure king = getKings().get(isWhite);
+        System.out.println(king.getPosition());
 //        Map<Integer, Integer> kingAttackerMoves = getKingAttackedWays(king);
 //        System.out.println(kingAttackerMoves.size());
 //        if(kingAttackerMoves.isEmpty()) {
