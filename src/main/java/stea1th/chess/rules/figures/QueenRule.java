@@ -17,9 +17,4 @@ public class QueenRule extends AbstractRule {
     public void register() {
         addToRegisteredRules("Q", this.getClass().getName());
     }
-
-//    @Override
-//    public boolean scanForPosition(int enemyKingPosition) {
-//        return false;
-//    }
 }

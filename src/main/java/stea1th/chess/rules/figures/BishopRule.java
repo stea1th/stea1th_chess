@@ -18,10 +18,4 @@ public class BishopRule extends AbstractRule {
     public void register() {
         addToRegisteredRules("B", this.getClass().getName());
     }
-
-//    @Override
-//    public boolean scanForPosition(int enemyKingPosition) {
-//        return false;
-//    }
-
 }

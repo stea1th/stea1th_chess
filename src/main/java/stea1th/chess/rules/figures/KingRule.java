@@ -18,8 +18,4 @@ public class KingRule extends AbstractRule {
         addToRegisteredRules("K", this.getClass().getName());
     }
 
-//    @Override
-//    public boolean scanForPosition(int enemyKingPosition) {
-//        return false;
-//    }
 }

@@ -110,29 +110,30 @@ public class GameController {
     private void setFiguresActive(boolean isWhite) {
         setAllFiguresInactive();
         Figure king = getKings().get(isWhite);
-        Map<Integer, Integer> kingAttackerMoves = getKingAttackedWays(king);
-        if(kingAttackerMoves.isEmpty()) {
+//        Map<Integer, Integer> kingAttackerMoves = getKingAttackedWays(king);
+//        System.out.println(kingAttackerMoves.size());
+//        if(kingAttackerMoves.isEmpty()) {
             FIGURES_IN_GAME.values()
                     .stream()
                     .filter(i -> i.isWhite() == isWhite && i.isAlive())
                     .forEach(i -> i.setActive(true));
-        } else {
-            System.out.println("King Attacked!!!!!");
-        }
+//        } else {
+//            System.out.println("King Attacked!!!!!");
+//        }
 
     }
 
-    private Map<Integer, Integer> getKingAttackedWays(Figure king) {
-        Map<Integer, Integer> kingAttackerMoves = new HashMap<>();
-        ALL_MOVES.entrySet()
-                .stream()
-                .filter(i -> i.getKey().isWhite() != king.isWhite() && i.getValue().get(king.getPosition()) != null)
-                .forEach(i-> {
-                    i.getValue().values().stream().filter(move -> i.getValue().get(king.getPosition()).getDirection() == move.getDirection())
-                            .forEach(c-> kingAttackerMoves.put(c.getNewPosition(), c.getNewPosition()));
-                });
-        return kingAttackerMoves;
-    }
+//    private Map<Integer, Integer> getKingAttackedWays(Figure king) {
+//        Map<Integer, Integer> kingAttackerMoves = new HashMap<>();
+//        ALL_MOVES.entrySet()
+//                .stream()
+//                .filter(i -> i.getKey().isWhite() != king.isWhite() && i.getValue().get(king.getPosition()) != null)
+//                .forEach(i-> {
+//                    i.getValue().values().stream().filter(move -> i.getValue().get(king.getPosition()).getDirection() == move.getDirection())
+//                            .forEach(c-> kingAttackerMoves.put(c.getNewPosition(), c.getNewPosition()));
+//                });
+//        return kingAttackerMoves;
+//    }
 
 
 //    public boolean doMovement(boolean isAccepted, int fromPosition, int toPosition) {

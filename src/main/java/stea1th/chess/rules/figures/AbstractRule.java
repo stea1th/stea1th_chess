@@ -26,6 +26,8 @@ public abstract class AbstractRule implements Rule {
     @Getter
     private final Set<Direction> directions;
 
+    private Map<Integer, Figure> enemyNearby = new HashMap<>();
+
     @Setter
     private Map<Integer, Figure> figuresInGame = new HashMap<>();
 
@@ -64,7 +66,10 @@ public abstract class AbstractRule implements Rule {
 
     boolean isEnemyNearby(Integer position) {
         Figure figure = figuresInGame.get(position);
-        return (figure != null && !figure.isWhite() == mainFigure.isWhite());
+        boolean isNearby = figure != null && !figure.isWhite() == mainFigure.isWhite();
+        if(isNearby)
+            enemyNearby.put(position, figure);
+        return isNearby;
     }
 
     private void clear(boolean clearThis) {

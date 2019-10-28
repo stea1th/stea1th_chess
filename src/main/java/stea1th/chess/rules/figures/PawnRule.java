@@ -35,12 +35,6 @@ public class PawnRule extends AbstractRule {
         return moves;
     }
 
-//    @Override
-//    public boolean scanForPosition(int enemyKingPosition) {
-////        return scanOneCellTurn(enemyKingPosition);
-//        return false;
-//    }
-
     private List<Move> pawnMovesIfEnemyNearby() {
         Direction[] dirs = mainFigure.isWhite() ? new Direction[]{NORTH_EAST, NORTH_WEST} : new Direction[]{SOUTH_EAST, SOUTH_WEST};
         return getMovesForDirections(mainFigure.getPosition(), new HashSet<>(Arrays.asList(dirs)))
