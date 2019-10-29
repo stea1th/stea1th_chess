@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 public class GameController {
 
     @Getter
-    private final Map<Integer, Figure> FIGURES_IN_GAME = new HashMap<>();
+    private final Map<Integer, Figure> figuresInGame = new HashMap<>();
 
-    private Map<Figure, Map<Integer, Move>> ALL_MOVES = new HashMap<>();
+    private Map<Figure, Map<Integer, Move>> allMoves = new HashMap<>();
 
     private static final AtomicInteger count = new AtomicInteger(100);
 
@@ -37,7 +37,7 @@ public class GameController {
                     list.forEach(s -> {
                         Figure figure = FigureFactory.createFigure(i, Integer.valueOf(s), param.contains("white"));
                         assert figure != null;
-                        FIGURES_IN_GAME.put(figure.getPosition(), figure);
+                        figuresInGame.put(figure.getPosition(), figure);
                     });
                 }
             });
@@ -45,14 +45,14 @@ public class GameController {
     }
 
     private void setAllFiguresInactive() {
-        FIGURES_IN_GAME.values().forEach(i -> i.setActive(false));
+        figuresInGame.values().forEach(i -> i.setActive(false));
     }
 
     private Map<Figure, Map<Integer, Move>> collectAllMoves() {
         Map<Figure, Map<Integer, Move>> allMoves = new HashMap<>();
-        for (Map.Entry<Integer, Figure> entry : FIGURES_IN_GAME.entrySet()) {
+        for (Map.Entry<Integer, Figure> entry : figuresInGame.entrySet()) {
             Figure figure = entry.getValue();
-            figure.setFiguresInGame(FIGURES_IN_GAME);
+            figure.setFiguresInGame(figuresInGame);
             allMoves.put(figure, figure.getRule().getAllPossibleMoves());
         }
         return allMoves;
@@ -64,10 +64,10 @@ public class GameController {
         setFiguresActive(isWhite);
         int from = positions[0];
         int to = positions[1];
-        Figure figure = FIGURES_IN_GAME.get(from);
+        Figure figure = figuresInGame.get(from);
         boolean isAccepted = figure != null && figure.isActive();
         if (isAccepted) {
-            Map<Integer, Move> moves = ALL_MOVES.get(figure);
+            Map<Integer, Move> moves = allMoves.get(figure);
             Move move = moves.get(to);
             isAccepted = move != null;
             if (isAccepted) {
@@ -105,38 +105,38 @@ public class GameController {
     }
 
     private Map<Figure, Map<Integer, Move>> ifKingAttacked(King king) {
-        return ALL_MOVES.entrySet()
+        return allMoves.entrySet()
                 .stream()
                 .filter(i -> i.getKey().isWhite() != king.isWhite() && i.getValue().get(king.getPosition()) != null)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     private void refreshMoves() {
-        ALL_MOVES = collectAllMoves();
+        allMoves = collectAllMoves();
     }
 
     private void killEnemy(int to) {
-        Figure anotherFigure = FIGURES_IN_GAME.get(to);
+        Figure anotherFigure = figuresInGame.get(to);
         killIt(to, anotherFigure);
     }
 
     private void moveIt(int from, int to, Figure figure) {
         figure.incrementMove();
-        FIGURES_IN_GAME.remove(from);
+        figuresInGame.remove(from);
         figure.setPosition(to);
-        FIGURES_IN_GAME.put(to, figure);
+        figuresInGame.put(to, figure);
     }
 
     private void killIt(int to, Figure figure) {
         if (figure != null) {
-            FIGURES_IN_GAME.remove(to);
+            figuresInGame.remove(to);
             figure.setAlive(false);
-            FIGURES_IN_GAME.put(count.incrementAndGet(), figure);
+            figuresInGame.put(count.incrementAndGet(), figure);
         }
     }
 
     private List<Figure> getFiguresByName(String name) {
-        return FIGURES_IN_GAME.values().stream().filter(i -> i.getName().equals(name.toLowerCase())).collect(Collectors.toList());
+        return figuresInGame.values().stream().filter(i -> i.getName().equals(name.toLowerCase())).collect(Collectors.toList());
     }
 
     private Map<Boolean, King> getKings() {
@@ -146,19 +146,29 @@ public class GameController {
     private void setFiguresActive(boolean isWhite) {
         setAllFiguresInactive();
         King king = getKings().get(isWhite);
-        Map<Integer, Integer> kingAttackerMoves = getMyKingAttackedWays(king);
-        kingAttackerMoves.values().forEach(System.out::println);
         if(!king.isAttacked()) {
-        FIGURES_IN_GAME.values()
+        figuresInGame.values()
                 .stream()
                 .filter(i -> i.isWhite() == isWhite && i.isAlive())
                 .forEach(i -> i.setActive(true));
         } else {
-
+            Map<Integer, Integer> kingAttackerMoves = getMyKingAttackedWays(king);
+            king.setActive(true);
+            Map<Figure, Map<Integer, Move>> possibleMoves = new HashMap<>();
+            allMoves.forEach((key, value) -> {
+                Map<Integer, Move> moves = value
+                        .entrySet()
+                        .stream()
+                        .filter(i-> kingAttackerMoves.get(i.getKey()) != null)
+                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                if(!moves.isEmpty()) {
+                    key.setActive(true);
+                    possibleMoves.put(key, moves);
+                }
+            });
+            allMoves.putAll(possibleMoves);
         }
-
     }
-
 
 //    private Map<Integer, Integer> getKingAttackedWays(Figure king) {
 //        Map<Integer, Integer> kingAttackerMoves = new HashMap<>();
@@ -172,14 +182,6 @@ public class GameController {
 //        return kingAttackerMoves;
 //    }
 
-
-//    public boolean doMovement(boolean isAccepted, int fromPosition, int toPosition) {
-//        if (isAccepted) {
-////            FIGURES_IN_GAME.remove(fromPosition);
-//            Map<String, Move> moves = ALL_MOVES.get
-//
-//        }
-//    }
 
 //    public void setFiguresActiveToProtect(boolean isWhite) {
 //        setAllFiguresInactive();
