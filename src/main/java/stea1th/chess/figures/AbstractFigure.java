@@ -26,9 +26,6 @@ public abstract class AbstractFigure implements Figure {
     private boolean active;
     private int movesCount;
     private Rule rule;
-    @Getter
-    @Setter
-    private boolean kingChecked = false;
     private boolean oneTurn;
 
     AbstractFigure(String notation, String name) {

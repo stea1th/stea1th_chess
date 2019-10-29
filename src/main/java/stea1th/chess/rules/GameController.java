@@ -8,6 +8,7 @@ import stea1th.chess.figures.FigureFactory;
 import stea1th.chess.figures.King;
 import stea1th.chess.to.Move;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,15 +83,7 @@ public class GameController {
     private void scanForEnemyKing(boolean isWhite) {
         King enemyKing = getKings().get(!isWhite);
         refreshMoves();
-//        String color = enemyKing.isWhite()? "white" : "black";
         enemyKing.setAttacked(!ifKingAttacked(enemyKing).isEmpty());
-//        if (!ifKingAttacked(enemyKing).isEmpty()) {
-//            System.out.println("EnemyKing " + color + " Attacked!!!!");
-//            enemyKing.setAttacked(true);
-//        } else {
-//            System.out.println("EnemyKing " + color + " not more Attacked!!!!");
-//            enemyKing.setAttacked(false);
-//        }
     }
 
     private Map<Integer, Integer> getMyKingAttackedWays(King king) {
@@ -146,22 +139,22 @@ public class GameController {
     private void setFiguresActive(boolean isWhite) {
         setAllFiguresInactive();
         King king = getKings().get(isWhite);
-        if(!king.isAttacked()) {
-        figuresInGame.values()
-                .stream()
-                .filter(i -> i.isWhite() == isWhite && i.isAlive())
-                .forEach(i -> i.setActive(true));
+        if (!king.isAttacked()) {
+            figuresInGame.values()
+                    .stream()
+                    .filter(i -> i.isWhite() == isWhite && i.isAlive())
+                    .forEach(i -> i.setActive(true));
         } else {
             Map<Integer, Integer> kingAttackerMoves = getMyKingAttackedWays(king);
-            king.setActive(true);
+            setMovesForAttackedKing(king);
             Map<Figure, Map<Integer, Move>> possibleMoves = new HashMap<>();
             allMoves.forEach((key, value) -> {
                 Map<Integer, Move> moves = value
                         .entrySet()
                         .stream()
-                        .filter(i-> kingAttackerMoves.get(i.getKey()) != null)
+                        .filter(i -> kingAttackerMoves.get(i.getKey()) != null)
                         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-                if(!moves.isEmpty()) {
+                if (!moves.isEmpty()) {
                     key.setActive(true);
                     possibleMoves.put(key, moves);
                 }
@@ -170,30 +163,16 @@ public class GameController {
         }
     }
 
-//    private Map<Integer, Integer> getKingAttackedWays(Figure king) {
-//        Map<Integer, Integer> kingAttackerMoves = new HashMap<>();
-//        ALL_MOVES.entrySet()
-//                .stream()
-//                .filter(i -> i.getKey().isWhite() != king.isWhite() && i.getValue().get(king.getPosition()) != null)
-//                .forEach(i-> {
-//                    i.getValue().values().stream().filter(move -> i.getValue().get(king.getPosition()).getDirection() == move.getDirection())
-//                            .forEach(c-> kingAttackerMoves.put(c.getNewPosition(), c.getNewPosition()));
-//                });
-//        return kingAttackerMoves;
-//    }
-
-
-//    public void setFiguresActiveToProtect(boolean isWhite) {
-//        setAllFiguresInactive();
-//
-//
-//    }
-
-//    private void isEnemyKingAttacked(boolean isWhite) {
-//        List<Figure> figures = new ArrayList<>(figuresInGame.values());
-//        Figure enemyKing =  figures.stream().filter(i-> i instanceof King && i.isWhite() != isWhite).findFirst().get();
-//        int kingPosition = enemyKing.getPosition();
-//        figures.forEach(i-> i.setFiguresInGame(figuresInGame));
-//        figures.stream().filter(i-> i.isActive() && i.getRule().scanForPosition(kingPosition)).forEach(i-> System.out.println(i.getName() + " -> " + i.getPosition()));
-//    }
+    private void setMovesForAttackedKing(King king) {
+        king.setActive(true);
+        Map<Integer, Move> kingMoves = allMoves.get(king);
+        List<Integer> movesToRemove = new ArrayList<>();
+        allMoves.entrySet()
+                .stream()
+                .filter(i -> i.getKey().isWhite() != king.isWhite())
+                .forEach(i -> kingMoves.entrySet().stream().filter(k -> i.getValue().get(k.getKey()) != null)
+                        .forEach(k -> movesToRemove.add(k.getKey())));
+        movesToRemove.forEach(kingMoves::remove);
+        allMoves.replace(king, kingMoves);
+    }
 }

@@ -1,7 +1,5 @@
 package stea1th.chess.rules.figures;
 
-import stea1th.chess.figures.Figure;
-
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -17,5 +15,15 @@ public class KingRule extends AbstractRule {
     public void register() {
         addToRegisteredRules("K", this.getClass().getName());
     }
+
+//    @Override
+//    public List<Move> findAllPossibleMoves() {
+//        King king = (King) mainFigure;
+//        if(!king.isAttacked()) {
+//            return super.findAllPossibleMoves();
+//        } else {
+//
+//        }
+//    }
 
 }
