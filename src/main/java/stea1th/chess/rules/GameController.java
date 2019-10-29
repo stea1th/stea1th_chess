@@ -5,6 +5,7 @@ import com.typesafe.config.ConfigFactory;
 import lombok.Getter;
 import stea1th.chess.figures.Figure;
 import stea1th.chess.figures.FigureFactory;
+import stea1th.chess.figures.King;
 import stea1th.chess.to.Move;
 
 import java.util.HashMap;
@@ -59,8 +60,8 @@ public class GameController {
 
     public boolean moveFigure(Integer[] positions, boolean isWhite) {
         if (positions == null) return false;
-        setFiguresActive(isWhite);
         ALL_MOVES = collectAllMoves();
+        setFiguresActive(isWhite);
         int from = positions[0];
         int to = positions[1];
         Figure figure = FIGURES_IN_GAME.get(from);
@@ -101,28 +102,34 @@ public class GameController {
         return FIGURES_IN_GAME.values().stream().filter(i -> i.getName().equals(name.toLowerCase())).collect(Collectors.toList());
     }
 
-    private Map<Boolean, Figure> getKings() {
-//        Map<Boolean, Figure> kingsPositions = new HashMap<>();
-//        getFiguresByName("King").forEach(i -> kingsPositions.put(i.isWhite(), i));
-//        return kingsPositions;
-        return getFiguresByName("King").stream().collect(Collectors.toMap(Figure::isWhite, i-> i));
+    private Map<Boolean, King> getKings() {
+        return getFiguresByName("King").stream().collect(Collectors.toMap(Figure::isWhite, i -> (King) i));
     }
 
     private void setFiguresActive(boolean isWhite) {
         setAllFiguresInactive();
-        Figure king = getKings().get(isWhite);
-        System.out.println(king.getPosition());
-//        Map<Integer, Integer> kingAttackerMoves = getKingAttackedWays(king);
+        King king = getKings().get(isWhite);
+//        Map<Integer, Integer> kingAttackerMoves =
+        getMyKingAttackedWays(king);
 //        System.out.println(kingAttackerMoves.size());
 //        if(kingAttackerMoves.isEmpty()) {
-            FIGURES_IN_GAME.values()
-                    .stream()
-                    .filter(i -> i.isWhite() == isWhite && i.isAlive())
-                    .forEach(i -> i.setActive(true));
+        FIGURES_IN_GAME.values()
+                .stream()
+                .filter(i -> i.isWhite() == isWhite && i.isAlive())
+                .forEach(i -> i.setActive(true));
 //        } else {
 //            System.out.println("King Attacked!!!!!");
 //        }
 
+    }
+
+    private Map<Integer, Integer> getMyKingAttackedWays(King king) {
+        Map<Integer, Integer> kingAttackerMoves = new HashMap<>();
+        ALL_MOVES.entrySet()
+                .stream()
+                .filter(i -> i.getKey().isWhite() != king.isWhite() && i.getValue().get(king.getPosition()) != null)
+                .forEach(i -> System.out.println(i.getKey().getName()));
+        return null;
     }
 
 //    private Map<Integer, Integer> getKingAttackedWays(Figure king) {

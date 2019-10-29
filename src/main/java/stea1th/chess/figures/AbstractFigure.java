@@ -13,7 +13,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = "rule")
+@EqualsAndHashCode(exclude = {"rule", "active"})
 public abstract class AbstractFigure implements Figure {
 
     @Getter
