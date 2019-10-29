@@ -77,9 +77,9 @@ public abstract class AbstractRule implements Rule {
             allPossibleMoves.clear();
     }
 
-    private void clear() {
-        clear(true);
-    }
+//    private void clear() {
+//        clear(true);
+//    }
 
     private List<Move> oneCellTurn(Integer position, Direction direction) {
         Integer tempPosition = getAdjoiningPosition(position, direction);
@@ -141,9 +141,7 @@ public abstract class AbstractRule implements Rule {
     List<Move> getMovesForDirections(Integer position, Set<Direction> myDirections) {
         List<Move> possibleMoves = new ArrayList<>();
         if (position != null) {
-            myDirections.forEach(direction -> {
-                possibleMoves.addAll(mainFigure.isOneTurn() ? oneCellTurn(position, direction) : moreCellsTurn(position, direction));
-            });
+            myDirections.forEach(direction -> possibleMoves.addAll(mainFigure.isOneTurn() ? oneCellTurn(position, direction) : moreCellsTurn(position, direction)));
         }
         return possibleMoves;
     }

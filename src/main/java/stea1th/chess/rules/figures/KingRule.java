@@ -16,14 +16,4 @@ public class KingRule extends AbstractRule {
         addToRegisteredRules("K", this.getClass().getName());
     }
 
-//    @Override
-//    public List<Move> findAllPossibleMoves() {
-//        King king = (King) mainFigure;
-//        if(!king.isAttacked()) {
-//            return super.findAllPossibleMoves();
-//        } else {
-//
-//        }
-//    }
-
 }
