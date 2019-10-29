@@ -52,7 +52,7 @@ public abstract class AbstractRule implements Rule {
         directions.add(dir);
     }
 
-    private static boolean isInBorders(Integer position) {
+    private static boolean isBetweenMinMax(Integer position) {
         return position != null && position > MIN.value && position < MAX.value;
     }
 
@@ -67,7 +67,7 @@ public abstract class AbstractRule implements Rule {
     boolean isEnemyNearby(Integer position) {
         Figure figure = figuresInGame.get(position);
         boolean isNearby = figure != null && !figure.isWhite() == mainFigure.isWhite();
-        if(isNearby)
+        if (isNearby)
             enemyNearby.put(position, figure);
         return isNearby;
     }
@@ -91,7 +91,7 @@ public abstract class AbstractRule implements Rule {
     private List<Move> moreCellsTurn(Integer position, Direction direction) {
         List<Move> moves = new ArrayList<>();
         Integer tempPosition = position;
-        while (isInBorders(tempPosition)) {
+        while (isBetweenMinMax(tempPosition)) {
             tempPosition = getAdjoiningPosition(tempPosition, direction);
             if (tempPosition == null) return moves;
             if (isPieceOnTheWay(tempPosition)) {
@@ -107,7 +107,14 @@ public abstract class AbstractRule implements Rule {
 
     private static Integer getAdjoiningPosition(int position, Direction direction) {
         int result = position + direction.value;
-        return isInBorders(result) ? result : null;
+        return
+//                isInBoarders(position, result) &&
+                        isBetweenMinMax(result) ? result : null;
+    }
+
+    private static boolean isInBorders(int position, int result) {
+        int factor = position / 8;
+        return factor * 8 + 1 <= result && (factor + 1) * 8 >= result;
     }
 
     private void addListToPossibleMoves(List<Move> moves) {

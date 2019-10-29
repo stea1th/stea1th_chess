@@ -16,9 +16,9 @@ public class Game {
     private Map<Boolean, String> players;
 
     public void play() {
-        GameController controller = new GameController();
+        GameController controller = new GameController(false);
         Boolean isWhite = true;
-        while (true) {
+        while (!controller.isGameOver()) {
             for (Map.Entry<Boolean, String> entry : players.entrySet()) {
                 if (isWhite.equals(entry.getKey())) {
                     printBoard(controller.getFiguresInGame(), isWhite);
