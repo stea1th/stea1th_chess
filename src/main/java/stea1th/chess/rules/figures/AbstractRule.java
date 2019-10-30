@@ -2,11 +2,13 @@ package stea1th.chess.rules.figures;
 
 import lombok.*;
 import stea1th.chess.figures.Figure;
+import stea1th.chess.rules.RestrictionRule;
 import stea1th.chess.rules.enums.Direction;
 import stea1th.chess.to.Move;
 
 import java.util.*;
 
+import static stea1th.chess.rules.RestrictionRule.*;
 import static stea1th.chess.rules.enums.Direction.*;
 
 @Data
@@ -108,7 +110,8 @@ public abstract class AbstractRule implements Rule {
     private static Integer getAdjoiningPosition(int position, Direction direction) {
         int result = position + direction.value;
         return
-//                isInBoarders(position, result) &&
+//                isInBorders(position, result) &&
+                !isRestricted(position, direction) &&
                         isBetweenMinMax(result) ? result : null;
     }
 
