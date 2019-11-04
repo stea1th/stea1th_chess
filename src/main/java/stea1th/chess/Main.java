@@ -9,7 +9,7 @@ import java.util.Map;
 public class Main {
 
     public static void main(String[] args) {
-        Map<Boolean, String> players =  ConsoleHelper.createPlayers();
+        Map<Boolean, String> players = ConsoleHelper.createPlayers();
         ChessBoard board = new ChessBoard();
         board.play(players);
 

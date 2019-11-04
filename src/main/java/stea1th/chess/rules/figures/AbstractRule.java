@@ -2,13 +2,12 @@ package stea1th.chess.rules.figures;
 
 import lombok.*;
 import stea1th.chess.figures.Figure;
-import stea1th.chess.rules.RestrictionRule;
 import stea1th.chess.rules.enums.Direction;
 import stea1th.chess.to.Move;
 
 import java.util.*;
 
-import static stea1th.chess.rules.RestrictionRule.*;
+import static stea1th.chess.rules.RestrictionRule.isRestricted;
 import static stea1th.chess.rules.enums.Direction.*;
 
 @Data
@@ -62,10 +61,6 @@ public abstract class AbstractRule implements Rule {
         return figuresInGame.get(position) != null;
     }
 
-//    private boolean isSameColor(Integer position) {
-//        return figuresInGame.get(position).isWhite() == mainFigure.isWhite();
-//    }
-
     boolean isEnemyNearby(Integer position) {
         Figure figure = figuresInGame.get(position);
         boolean isNearby = figure != null && !figure.isWhite() == mainFigure.isWhite();
@@ -82,9 +77,7 @@ public abstract class AbstractRule implements Rule {
     private List<Move> oneCellTurn(Integer position, Direction direction) {
         Integer tempPosition = getAdjoiningPosition(position, direction);
         return tempPosition == null || (isPieceOnTheWay(tempPosition)
-                && (
-//                        isSameColor(tempPosition) ||
-                (mainFigure.getNotation().equals("p")
+                && ((mainFigure.getNotation().equals("p")
                 && (direction == NORTH || direction == SOUTH)))) ? Collections.emptyList() : Collections.singletonList(new Move(tempPosition, position, direction));
     }
 
@@ -95,9 +88,7 @@ public abstract class AbstractRule implements Rule {
             tempPosition = getAdjoiningPosition(tempPosition, direction);
             if (tempPosition == null) return moves;
             if (isPieceOnTheWay(tempPosition)) {
-//                if (!isSameColor(tempPosition)) {
-                    moves.add(new Move(tempPosition, position, direction));
-//                }
+                moves.add(new Move(tempPosition, position, direction));
                 return moves;
             }
             moves.add(new Move(tempPosition, position, direction));
@@ -108,7 +99,7 @@ public abstract class AbstractRule implements Rule {
     private static Integer getAdjoiningPosition(int position, Direction direction) {
         int result = position + direction.value;
         return !isRestricted(position, direction) &&
-                        isBetweenMinMax(result) ? result : null;
+                isBetweenMinMax(result) ? result : null;
     }
 
     private void addListToPossibleMoves(List<Move> moves) {

@@ -23,10 +23,9 @@ public class Game {
                 if (isWhite.equals(entry.getKey())) {
                     printBoard(controller.getFiguresInGame(), isWhite);
                     controller.refresh(isWhite);
-                    if(controller.isGameOver()) break;
+                    if (controller.isGameOver()) break;
                     isWhite = controller
                             .moveFigure(parsePositions(TurnConverter.convert(readFromConsole(entry.getValue())))) != isWhite;
-
                 }
             }
         }
