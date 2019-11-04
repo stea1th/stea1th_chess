@@ -6,9 +6,12 @@ import stea1th.chess.rules.enums.Direction;
 import stea1th.chess.to.Move;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
+import static stea1th.chess.rules.RestrictionRule.isBetweenMinMax;
 import static stea1th.chess.rules.RestrictionRule.isRestricted;
-import static stea1th.chess.rules.enums.Direction.*;
+import static stea1th.chess.rules.enums.Direction.NORTH;
+import static stea1th.chess.rules.enums.Direction.SOUTH;
 
 @Data
 @AllArgsConstructor
@@ -16,21 +19,19 @@ import static stea1th.chess.rules.enums.Direction.*;
 @EqualsAndHashCode(exclude = "mainFigure")
 public abstract class AbstractRule implements Rule {
 
-    @Setter
-    @Getter
     Figure mainFigure;
 
     private final static Map<String, String> REGISTERED_RULES = new HashMap<>();
 
     private final Map<Integer, Move> allPossibleMoves = new HashMap<>();
 
-    @Getter
-    private final Set<Direction> directions;
-
     private Map<Integer, Figure> enemyNearby = new HashMap<>();
 
     @Setter
     private Map<Integer, Figure> figuresInGame = new HashMap<>();
+
+    @Getter
+    private final Set<Direction> directions;
 
     public Map<Integer, Move> getAllPossibleMoves() {
         addListToPossibleMoves(findAllPossibleMoves());
@@ -51,10 +52,6 @@ public abstract class AbstractRule implements Rule {
 
     void addToDirections(Direction dir) {
         directions.add(dir);
-    }
-
-    private static boolean isBetweenMinMax(Integer position) {
-        return position != null && position > MIN.value && position < MAX.value;
     }
 
     private boolean isPieceOnTheWay(Integer position) {
@@ -98,8 +95,11 @@ public abstract class AbstractRule implements Rule {
 
     private static Integer getAdjoiningPosition(int position, Direction direction) {
         int result = position + direction.value;
-        return !isRestricted(position, direction) &&
-                isBetweenMinMax(result) ? result : null;
+//        System.out.println(position + " -> " + direction);
+//        System.out.println("=============== " + !isRestricted(result, direction) + " -> " + result + " -> " + direction);
+        return
+                !isRestricted(position, direction) &&
+                        isBetweenMinMax(result) ? result : null;
     }
 
     private void addListToPossibleMoves(List<Move> moves) {
@@ -121,6 +121,10 @@ public abstract class AbstractRule implements Rule {
 
     private List<Move> getMovesForDirections(Integer position) {
         return getMovesForDirections(position, directions);
+    }
+
+    List<Move> getMovesForDirection(Integer position, Direction myDirection) {
+        return getMovesForDirections(position, Collections.singleton(myDirection));
     }
 
     List<Move> getMovesForDirections(Integer position, Set<Direction> myDirections) {

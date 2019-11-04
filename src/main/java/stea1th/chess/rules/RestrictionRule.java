@@ -2,6 +2,9 @@ package stea1th.chess.rules;
 
 import stea1th.chess.rules.enums.Direction;
 
+import static stea1th.chess.rules.enums.Direction.MAX;
+import static stea1th.chess.rules.enums.Direction.MIN;
+
 public class RestrictionRule {
 
     private static final int BOARD_HEIGHT = 8;
@@ -35,7 +38,10 @@ public class RestrictionRule {
     }
 
     private static boolean checkEastRestrictions(int position, int repetition) {
-        for (int i = 0; i < repetition; i++) {
+        System.out.println("===================== " + position);
+        for (int i = 1; i < repetition; i++) {
+            System.out.println(position);
+            System.out.println(checkEastRestrictions(position, i));
             if (checkEastRestriction(position, i)) return true;
         }
         return false;
@@ -60,6 +66,10 @@ public class RestrictionRule {
 
     private static int getFactor(int position) {
         return position / BOARD_HEIGHT;
+    }
+
+    public static boolean isBetweenMinMax(Integer position) {
+        return position != null && position > MIN.value && position < MAX.value;
     }
 
 }

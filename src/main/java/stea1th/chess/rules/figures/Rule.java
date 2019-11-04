@@ -14,6 +14,4 @@ public interface Rule {
     void setMainFigure(Figure mainFigure);
 
     Move getMove(int to);
-
-//    boolean scanForPosition(int enemyKingPosition);
 }

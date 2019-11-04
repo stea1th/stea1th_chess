@@ -77,7 +77,7 @@ public class GameController {
     }
 
     private boolean existActiveFigures(boolean isWhite) {
-        return figuresInGame.values().stream().filter(i-> isSameColor(i, isWhite)).anyMatch(Figure::isActive);
+        return figuresInGame.values().stream().filter(i -> isSameColor(i, isWhite)).anyMatch(Figure::isActive);
     }
 
     private void scanForEnemyKing(boolean isWhite) {
@@ -111,15 +111,25 @@ public class GameController {
     private boolean moveIsPossible(Figure figure, int to) {
         Figure anotherFigure = figuresInGame.get(to);
         if (!exist(anotherFigure)) {
-            moveIt(figure, to);
-            return true;
+//            Move move = figure.getMove(to);
+//            return move.isCastling() ? makeCastling(move) :
+            return moveIt(figure, to);
         } else if (!isSameColor(anotherFigure, figure)) {
             killIt(anotherFigure, to);
-            moveIt(figure, to);
-            return true;
+            return moveIt(figure, to);
         }
         return false;
     }
+
+//    private boolean makeCastling(Move move) {
+//        if (move.getDirection() == WEST) {
+//
+//        } else {
+//
+//        }
+//
+//        return false;
+//    }
 
     private boolean move(int from, int to) {
         Figure figure = getFigure(from);
@@ -128,12 +138,13 @@ public class GameController {
         return false;
     }
 
-    private void moveIt(Figure figure, int to) {
+    private boolean moveIt(Figure figure, int to) {
         figure.incrementMove();
         figuresInGame.remove(figure.getPosition());
         figure.setPosition(to);
         figuresInGame.put(to, figure);
         scanForEnemyKing(figure.isWhite());
+        return true;
     }
 
     private void killIt(Figure figure, int to) {
@@ -206,7 +217,7 @@ public class GameController {
                         .filter(k -> exist(i.getValue().get(k.getKey())))
                         .forEach(k -> movesToRemove.add(k.getKey())));
         kingMoves.forEach((k, v) -> {
-            if(isFriendOnWay(king, v.getNewPosition())) {
+            if (isFriendOnWay(king, v.getNewPosition())) {
                 movesToRemove.add(v.getNewPosition());
             }
         });

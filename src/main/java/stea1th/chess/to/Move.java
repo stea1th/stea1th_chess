@@ -10,4 +10,12 @@ public class Move {
     private int newPosition;
     private int oldPosition;
     private Direction direction;
+    private boolean isCastling;
+
+    public Move(int newPosition, int oldPosition, Direction direction) {
+        this.newPosition = newPosition;
+        this.oldPosition = oldPosition;
+        this.direction = direction;
+        this.isCastling = false;
+    }
 }
