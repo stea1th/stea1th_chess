@@ -38,10 +38,10 @@ public class RestrictionRule {
     }
 
     private static boolean checkEastRestrictions(int position, int repetition) {
-        System.out.println("===================== " + position);
+        System.out.println("===================== " + position + " ============ " + repetition);
         for (int i = 1; i < repetition; i++) {
             System.out.println(position);
-            System.out.println(checkEastRestrictions(position, i));
+            System.out.println(checkEastRestriction(position, i));
             if (checkEastRestriction(position, i)) return true;
         }
         return false;
