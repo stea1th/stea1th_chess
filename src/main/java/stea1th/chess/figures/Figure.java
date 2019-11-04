@@ -1,6 +1,7 @@
 package stea1th.chess.figures;
 
 import stea1th.chess.rules.figures.Rule;
+import stea1th.chess.to.Move;
 
 import java.util.Map;
 
@@ -39,4 +40,6 @@ public interface Figure {
     int getMovesCount();
 
     void incrementMove();
+
+    Move getMove(int to);
 }

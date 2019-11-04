@@ -4,6 +4,7 @@ package stea1th.chess.figures;
 import lombok.*;
 import stea1th.chess.rules.figures.FigureRuleFactory;
 import stea1th.chess.rules.figures.Rule;
+import stea1th.chess.to.Move;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -77,5 +78,9 @@ public abstract class AbstractFigure implements Figure {
 
     public void incrementMove() {
         movesCount++;
+    }
+
+    public Move getMove(int to) {
+        return rule.getMove(to);
     }
 }

@@ -22,7 +22,11 @@ public class Game {
             for (Map.Entry<Boolean, String> entry : players.entrySet()) {
                 if (isWhite.equals(entry.getKey())) {
                     printBoard(controller.getFiguresInGame(), isWhite);
-                    isWhite = controller.moveFigure(parsePositions(TurnConverter.convert(readFromConsole(entry.getValue()))), isWhite) != isWhite;
+                    controller.refresh(isWhite);
+                    if(controller.isGameOver()) break;
+                    isWhite = controller
+                            .moveFigure(parsePositions(TurnConverter.convert(readFromConsole(entry.getValue())))) != isWhite;
+
                 }
             }
         }

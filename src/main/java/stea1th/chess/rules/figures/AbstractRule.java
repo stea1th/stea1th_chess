@@ -62,9 +62,9 @@ public abstract class AbstractRule implements Rule {
         return figuresInGame.get(position) != null;
     }
 
-    private boolean isSameColor(Integer position) {
-        return figuresInGame.get(position).isWhite() == mainFigure.isWhite();
-    }
+//    private boolean isSameColor(Integer position) {
+//        return figuresInGame.get(position).isWhite() == mainFigure.isWhite();
+//    }
 
     boolean isEnemyNearby(Integer position) {
         Figure figure = figuresInGame.get(position);
@@ -79,14 +79,12 @@ public abstract class AbstractRule implements Rule {
             allPossibleMoves.clear();
     }
 
-//    private void clear() {
-//        clear(true);
-//    }
-
     private List<Move> oneCellTurn(Integer position, Direction direction) {
         Integer tempPosition = getAdjoiningPosition(position, direction);
         return tempPosition == null || (isPieceOnTheWay(tempPosition)
-                && (isSameColor(tempPosition) || (mainFigure.getNotation().equals("p")
+                && (
+//                        isSameColor(tempPosition) ||
+                (mainFigure.getNotation().equals("p")
                 && (direction == NORTH || direction == SOUTH)))) ? Collections.emptyList() : Collections.singletonList(new Move(tempPosition, position, direction));
     }
 
@@ -97,9 +95,9 @@ public abstract class AbstractRule implements Rule {
             tempPosition = getAdjoiningPosition(tempPosition, direction);
             if (tempPosition == null) return moves;
             if (isPieceOnTheWay(tempPosition)) {
-                if (!isSameColor(tempPosition)) {
+//                if (!isSameColor(tempPosition)) {
                     moves.add(new Move(tempPosition, position, direction));
-                }
+//                }
                 return moves;
             }
             moves.add(new Move(tempPosition, position, direction));
@@ -109,15 +107,8 @@ public abstract class AbstractRule implements Rule {
 
     private static Integer getAdjoiningPosition(int position, Direction direction) {
         int result = position + direction.value;
-        return
-//                isInBorders(position, result) &&
-                !isRestricted(position, direction) &&
+        return !isRestricted(position, direction) &&
                         isBetweenMinMax(result) ? result : null;
-    }
-
-    private static boolean isInBorders(int position, int result) {
-        int factor = position / 8;
-        return factor * 8 + 1 <= result && (factor + 1) * 8 >= result;
     }
 
     private void addListToPossibleMoves(List<Move> moves) {
@@ -147,5 +138,9 @@ public abstract class AbstractRule implements Rule {
             myDirections.forEach(direction -> possibleMoves.addAll(mainFigure.isOneTurn() ? oneCellTurn(position, direction) : moreCellsTurn(position, direction)));
         }
         return possibleMoves;
+    }
+
+    public Move getMove(int to) {
+        return this.allPossibleMoves.get(to);
     }
 }
