@@ -3,10 +3,12 @@ package stea1th.chess.rules;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import lombok.Getter;
+import org.apache.commons.lang3.SerializationUtils;
 import stea1th.chess.figures.Figure;
 import stea1th.chess.figures.FigureFactory;
 import stea1th.chess.figures.King;
 import stea1th.chess.to.Move;
+import stea1th.chess.to.RestoreData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,10 +82,12 @@ public class GameController {
         return figuresInGame.values().stream().filter(i -> isSameColor(i, isWhite)).anyMatch(Figure::isActive);
     }
 
-    private void scanForEnemyKing(boolean isWhite) {
-        King enemyKing = getKings().get(!isWhite);
+    private boolean scanForKing(boolean isWhite) {
+        King king = getKings().get(isWhite);
         refreshMoves();
-        enemyKing.setAttacked(!checkKingAttacked(enemyKing).isEmpty());
+        boolean attacked = !checkKingAttacked(king).isEmpty();
+        king.setAttacked(attacked);
+        return attacked;
     }
 
     private Map<Integer, Integer> getMyKingAttackedWays(King king) {
@@ -110,13 +114,15 @@ public class GameController {
 
     private boolean moveIsPossible(Figure figure, int to) {
         Figure anotherFigure = figuresInGame.get(to);
+        RestoreData restoreData = SerializationUtils.clone(new RestoreData(figure, anotherFigure, to));
+
         if (!exist(anotherFigure)) {
 //            Move move = figure.getMove(to);
 //            return move.isCastling() ? makeCastling(move) :
-            return moveIt(figure, to);
+            return moveIt(figure, to, restoreData);
         } else if (!isSameColor(anotherFigure, figure)) {
-            killIt(anotherFigure, to);
-            return moveIt(figure, to);
+            restoreData.setAnotherFigurePosition(killIt(anotherFigure, to));
+            return moveIt(figure, to, restoreData);
         }
         return false;
     }
@@ -138,19 +144,38 @@ public class GameController {
         return false;
     }
 
-    private boolean moveIt(Figure figure, int to) {
-        figure.incrementMove();
+    private boolean moveIt(Figure figure, int to, RestoreData restoreData) {
         figuresInGame.remove(figure.getPosition());
         figure.setPosition(to);
         figuresInGame.put(to, figure);
-        scanForEnemyKing(figure.isWhite());
+        if(scanForKing(figure.isWhite())) {
+            restore(restoreData);
+            return false;
+        }
+        figure.incrementMove();
+        scanForKing(!figure.isWhite());
         return true;
     }
 
-    private void killIt(Figure figure, int to) {
+    private int killIt(Figure figure, int to) {
         figuresInGame.remove(to);
         figure.setAlive(false);
-        figuresInGame.put(count.incrementAndGet(), figure);
+        int anotherPosition = count.incrementAndGet();
+        figuresInGame.put(anotherPosition, figure);
+        return anotherPosition;
+    }
+
+    private void restore(RestoreData restoreData) {
+        Figure anotherFigure = restoreData.getAnotherFigure();
+        Figure figure = restoreData.getFigure();
+        int to = restoreData.getNewPosition();
+        figuresInGame.remove(to);
+        figuresInGame.put(figure.getPosition(), figure);
+        if(exist(anotherFigure)) {
+            figuresInGame.remove(restoreData.getAnotherFigurePosition());
+            anotherFigure.setAlive(true);
+            figuresInGame.put(to, anotherFigure);
+        }
     }
 
     private List<Figure> getFiguresByName(String name) {

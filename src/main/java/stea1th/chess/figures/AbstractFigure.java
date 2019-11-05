@@ -6,6 +6,7 @@ import stea1th.chess.rules.figures.FigureRuleFactory;
 import stea1th.chess.rules.figures.Rule;
 import stea1th.chess.to.Move;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"rule", "active"})
-public abstract class AbstractFigure implements Figure {
+public abstract class AbstractFigure implements Figure, Serializable {
 
     @Getter
     private String notation;

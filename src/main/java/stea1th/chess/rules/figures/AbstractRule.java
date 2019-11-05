@@ -5,6 +5,7 @@ import stea1th.chess.figures.Figure;
 import stea1th.chess.rules.enums.Direction;
 import stea1th.chess.to.Move;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -17,7 +18,7 @@ import static stea1th.chess.rules.enums.Direction.SOUTH;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @EqualsAndHashCode(exclude = "mainFigure")
-public abstract class AbstractRule implements Rule {
+public abstract class AbstractRule implements Rule, Serializable {
 
     Figure mainFigure;
 
