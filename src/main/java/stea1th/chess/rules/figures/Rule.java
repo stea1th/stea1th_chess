@@ -14,4 +14,6 @@ public interface Rule {
     void setMainFigure(Figure mainFigure);
 
     Move getMove(int to);
+
+    void setAllPossibleMoves(Map<Integer, Move> moves);
 }

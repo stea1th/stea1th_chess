@@ -25,8 +25,6 @@ public interface Figure {
 
     void setPosition(Integer position);
 
-//    boolean move(int newPosition);
-
     void setFiguresInGame(Map<Integer, Figure> figuresInGame);
 
     boolean isWhite();
@@ -42,4 +40,6 @@ public interface Figure {
     void incrementMove();
 
     Move getMove(int to);
+
+    void setAllPossibleMoves(Map<Integer, Move> moves);
 }

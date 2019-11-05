@@ -200,6 +200,7 @@ public class GameController {
                     if (!moves.isEmpty()) {
                         Figure figure = entry.getKey();
                         figure.setActive(true);
+                        figure.setAllPossibleMoves(moves);
                         possibleMoves.put(figure, moves);
                     }
                 });

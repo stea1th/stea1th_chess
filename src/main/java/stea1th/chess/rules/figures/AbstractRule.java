@@ -23,7 +23,7 @@ public abstract class AbstractRule implements Rule {
 
     private final static Map<String, String> REGISTERED_RULES = new HashMap<>();
 
-    private final Map<Integer, Move> allPossibleMoves = new HashMap<>();
+    private Map<Integer, Move> allPossibleMoves = new HashMap<>();
 
     private Map<Integer, Figure> enemyNearby = new HashMap<>();
 

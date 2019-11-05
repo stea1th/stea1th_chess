@@ -83,4 +83,9 @@ public abstract class AbstractFigure implements Figure {
     public Move getMove(int to) {
         return rule.getMove(to);
     }
+
+    @Override
+    public void setAllPossibleMoves(Map<Integer, Move> moves) {
+        rule.setAllPossibleMoves(moves);
+    }
 }
