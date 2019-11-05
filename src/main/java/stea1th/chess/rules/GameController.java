@@ -29,6 +29,8 @@ public class GameController {
 
     private static final AtomicInteger count = new AtomicInteger(100);
 
+    private RestoreData restoreData;
+
     @Getter
     private boolean isGameOver;
 
@@ -112,46 +114,37 @@ public class GameController {
         allMoves = collectAllMoves();
     }
 
-    private boolean moveIsPossible(Figure figure, int to) {
-        Figure anotherFigure = figuresInGame.get(to);
-        RestoreData restoreData = SerializationUtils.clone(new RestoreData(figure, anotherFigure, to));
+    private boolean moveIsPossible(Figure figure, Figure anotherFigure, int to) {
+
+        restoreData = SerializationUtils.clone(new RestoreData(figure, anotherFigure, to));
 
         if (!exist(anotherFigure)) {
-//            Move move = figure.getMove(to);
-//            return move.isCastling() ? makeCastling(move) :
-            return moveIt(figure, to, restoreData);
+            return tryMove(figure, to);
         } else if (!isSameColor(anotherFigure, figure)) {
             restoreData.setAnotherFigurePosition(killIt(anotherFigure, to));
-            return moveIt(figure, to, restoreData);
+            return tryMove(figure, to);
         }
         return false;
     }
-
-//    private boolean makeCastling(Move move) {
-//        if (move.getDirection() == WEST) {
-//
-//        } else {
-//
-//        }
-//
-//        return false;
-//    }
 
     private boolean move(int from, int to) {
         Figure figure = getFigure(from);
         if (!exist(figure) || !figure.isActive()) return false;
-        if (exist(figure.getMove(to))) return moveIsPossible(figure, to);
+        Figure anotherFigure = figuresInGame.get(to);
+        if (exist(figure.getMove(to)) && moveIsPossible(figure, anotherFigure, to))
+            return moveIt(getFigure(from), anotherFigure, to);
         return false;
     }
 
-    private boolean moveIt(Figure figure, int to, RestoreData restoreData) {
-        figuresInGame.remove(figure.getPosition());
-        figure.setPosition(to);
-        figuresInGame.put(to, figure);
-        if(scanForKing(figure.isWhite())) {
-            restore(restoreData);
-            return false;
-        }
+    private boolean tryMove(Figure figure, int to) {
+        moveFigureToNewPosition(figure, null, to);
+        boolean isTrue = scanForKing(figure.isWhite());
+        restore(restoreData);
+        return !isTrue;
+    }
+
+    private boolean moveIt(Figure figure, Figure anotherFigure, int to) {
+        moveFigureToNewPosition(figure, anotherFigure, to);
         figure.incrementMove();
         scanForKing(!figure.isWhite());
         return true;
@@ -165,13 +158,21 @@ public class GameController {
         return anotherPosition;
     }
 
+    private void moveFigureToNewPosition(Figure figure, Figure anotherFigure, int to) {
+        if (exist(anotherFigure)) killIt(anotherFigure, to);
+        figuresInGame.remove(figure.getPosition());
+        figure.setPosition(to);
+        figuresInGame.put(to, figure);
+    }
+
     private void restore(RestoreData restoreData) {
         Figure anotherFigure = restoreData.getAnotherFigure();
         Figure figure = restoreData.getFigure();
         int to = restoreData.getNewPosition();
         figuresInGame.remove(to);
         figuresInGame.put(figure.getPosition(), figure);
-        if(exist(anotherFigure)) {
+        if (exist(anotherFigure)) {
+            System.out.println(restoreData.getAnotherFigurePosition());
             figuresInGame.remove(restoreData.getAnotherFigurePosition());
             anotherFigure.setAlive(true);
             figuresInGame.put(to, anotherFigure);
@@ -221,9 +222,10 @@ public class GameController {
                             .stream()
                             .filter(moveEntry -> exist(kingAttackerMoves.get(moveEntry.getKey())))
                             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                    Figure figure = entry.getKey();
                     moves.remove(king.getPosition());
+//                    moves = moves.entrySet().stream().filter(k -> moveIsPossible(figure, getFigure(k.getKey()), k.getKey())).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
                     if (!moves.isEmpty()) {
-                        Figure figure = entry.getKey();
                         figure.setActive(true);
                         figure.setAllPossibleMoves(moves);
                         possibleMoves.put(figure, moves);

@@ -96,8 +96,6 @@ public abstract class AbstractRule implements Rule, Serializable {
 
     private static Integer getAdjoiningPosition(int position, Direction direction) {
         int result = position + direction.value;
-//        System.out.println(position + " -> " + direction);
-//        System.out.println("=============== " + !isRestricted(result, direction) + " -> " + result + " -> " + direction);
         return
                 !isRestricted(position, direction) &&
                         isBetweenMinMax(result) ? result : null;
