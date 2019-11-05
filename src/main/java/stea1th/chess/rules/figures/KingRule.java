@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static stea1th.chess.rules.enums.Direction.*;
 
@@ -34,7 +33,7 @@ public class KingRule extends AbstractRule {
     private List<Move> kingMovesForCastling(List<Move> allMoves) {
         Direction[] dirs = new Direction[]{EAST, WEST};
         List<Move> moves = new ArrayList<>();
-        for(Direction dir : dirs) {
+        for (Direction dir : dirs) {
             Move move = allMoves.stream().filter(m -> m.getDirection() == dir).findFirst().get();
             getMovesForDirection(move.getNewPosition(), dir).forEach(m -> {
                 m.setCastling(true);

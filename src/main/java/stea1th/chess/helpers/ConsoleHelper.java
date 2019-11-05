@@ -9,6 +9,8 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static stea1th.chess.helpers.GameHelper.exist;
+
 public class ConsoleHelper {
 
     private ConsoleHelper() {
@@ -27,7 +29,7 @@ public class ConsoleHelper {
     }
 
     public static Integer[] parsePositions(String position) {
-        if (position == null) return null;
+        if (!exist(position)) return null;
         return Arrays.stream(position.split(":"))
                 .map(Integer::valueOf)
                 .toArray(Integer[]::new);
@@ -57,7 +59,7 @@ public class ConsoleHelper {
                 } else {
                     int num = column + BOARD_SIZE * row;
                     Figure figure = figures.get(num);
-                    String cell = figure != null && figure.isAlive() ? ONE_SPACE + figure.getView() : getEmptyCell(row, num, true);
+                    String cell = exist(figure) && figure.isAlive() ? ONE_SPACE + figure.getView() : getEmptyCell(row, num, true);
                     System.out.print("|" + cell);
                 }
             }
@@ -91,7 +93,7 @@ public class ConsoleHelper {
                 } else {
                     int num = BOARD_SIZE * row - column + 1;
                     Figure figure = figures.get(num);
-                    String cell = figure != null && figure.isAlive() ? ONE_SPACE + figure.getView() : getEmptyCell(row, num, false);
+                    String cell = exist(figure) && figure.isAlive() ? ONE_SPACE + figure.getView() : getEmptyCell(row, num, false);
                     System.out.print("|" + cell);
                 }
             }
@@ -175,7 +177,7 @@ public class ConsoleHelper {
         String userChoice;
         boolean isWhite;
         if (players.size() != 0) {
-            isWhite = players.get(true) == null;
+            isWhite = !exist(players.get(true));
         } else {
             System.out.print("Choose your color: w/b?");
             userChoice = SCANNER.next().toLowerCase();

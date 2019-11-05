@@ -1,7 +1,5 @@
 package stea1th.chess.rules.figures;
 
-import stea1th.chess.figures.Figure;
-
 import java.util.Arrays;
 import java.util.HashSet;
 

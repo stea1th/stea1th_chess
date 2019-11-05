@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static stea1th.chess.helpers.GameHelper.exist;
+import static stea1th.chess.helpers.GameHelper.isSameColor;
 import static stea1th.chess.rules.RestrictionRule.isBetweenMinMax;
 import static stea1th.chess.rules.RestrictionRule.isRestricted;
 import static stea1th.chess.rules.enums.Direction.NORTH;
@@ -48,7 +50,7 @@ public abstract class AbstractRule implements Rule, Serializable {
     @SuppressWarnings(value = "unchecked")
     static <T extends AbstractRule> T newInstance(Figure figure) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         String clazzName = REGISTERED_RULES.get(figure.getNotation());
-        return (T) Class.forName(clazzName != null ? clazzName : REGISTERED_RULES.get(" ")).newInstance();
+        return (T) Class.forName(exist(clazzName) ? clazzName : REGISTERED_RULES.get(" ")).newInstance();
     }
 
     void addToDirections(Direction dir) {
@@ -56,12 +58,12 @@ public abstract class AbstractRule implements Rule, Serializable {
     }
 
     private boolean isPieceOnTheWay(Integer position) {
-        return figuresInGame.get(position) != null;
+        return exist(figuresInGame.get(position));
     }
 
     boolean isEnemyNearby(Integer position) {
         Figure figure = figuresInGame.get(position);
-        boolean isNearby = figure != null && !figure.isWhite() == mainFigure.isWhite();
+        boolean isNearby = exist(figure) && !isSameColor(figure, mainFigure);
         if (isNearby)
             enemyNearby.put(position, figure);
         return isNearby;
@@ -74,7 +76,7 @@ public abstract class AbstractRule implements Rule, Serializable {
 
     private List<Move> oneCellTurn(Integer position, Direction direction) {
         Integer tempPosition = getAdjoiningPosition(position, direction);
-        return tempPosition == null || (isPieceOnTheWay(tempPosition)
+        return !exist(tempPosition) || (isPieceOnTheWay(tempPosition)
                 && ((mainFigure.getNotation().equals("p")
                 && (direction == NORTH || direction == SOUTH)))) ? Collections.emptyList() : Collections.singletonList(new Move(tempPosition, position, direction));
     }
@@ -84,7 +86,7 @@ public abstract class AbstractRule implements Rule, Serializable {
         Integer tempPosition = position;
         while (isBetweenMinMax(tempPosition)) {
             tempPosition = getAdjoiningPosition(tempPosition, direction);
-            if (tempPosition == null) return moves;
+            if (!exist(tempPosition)) return moves;
             if (isPieceOnTheWay(tempPosition)) {
                 moves.add(new Move(tempPosition, position, direction));
                 return moves;
@@ -128,8 +130,9 @@ public abstract class AbstractRule implements Rule, Serializable {
 
     List<Move> getMovesForDirections(Integer position, Set<Direction> myDirections) {
         List<Move> possibleMoves = new ArrayList<>();
-        if (position != null) {
-            myDirections.forEach(direction -> possibleMoves.addAll(mainFigure.isOneTurn() ? oneCellTurn(position, direction) : moreCellsTurn(position, direction)));
+        if (exist(position)) {
+            myDirections.forEach(direction -> possibleMoves.addAll(mainFigure.isOneTurn() ?
+                    oneCellTurn(position, direction) : moreCellsTurn(position, direction)));
         }
         return possibleMoves;
     }
