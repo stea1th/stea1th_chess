@@ -24,9 +24,9 @@ public class KingRule extends AbstractRule {
     @Override
     public List<Move> findAllPossibleMoves() {
         List<Move> moves = new ArrayList<>(findPossibleMoves(mainFigure.getPosition()));
-        if (mainFigure.getMovesCount() == 0) {
-            moves.addAll(kingMovesForCastling(moves));
-        }
+//        if (mainFigure.getMovesCount() == 0) {
+//            moves.addAll(kingMovesForCastling(moves));
+//        }
         return moves;
     }
 

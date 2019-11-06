@@ -10,10 +10,7 @@ import stea1th.chess.figures.King;
 import stea1th.chess.to.Move;
 import stea1th.chess.to.RestoreData;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -236,7 +233,7 @@ public class GameController {
 
     private void setMovesForAttackedKing(King king) {
         Map<Integer, Move> kingMoves = allMoves.get(king);
-        List<Integer> movesToRemove = new ArrayList<>();
+        Set<Integer> movesToRemove = new HashSet<>();
         allMoves.entrySet()
                 .stream()
                 .filter(i -> !isSameColor(i.getKey(), king))

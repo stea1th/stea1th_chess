@@ -11,11 +11,11 @@ import static stea1th.chess.helpers.ConsoleHelper.*;
 
 @Data
 @AllArgsConstructor
-public class Game {
+class Game {
 
     private Map<Boolean, String> players;
 
-    public void play() {
+    void play() {
         GameController controller = new GameController(false);
         Boolean isWhite = true;
         while (!controller.isGameOver()) {
